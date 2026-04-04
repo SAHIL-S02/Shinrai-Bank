@@ -31,7 +31,7 @@ export function NavbarDemo() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative w-full bg-[#7763EA]">
+    <div className="relative w-full bg-[#101212]">
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
@@ -39,7 +39,7 @@ export function NavbarDemo() {
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
             <NavbarButton variant="secondary">Login</NavbarButton>
-            <NavbarButton variant="primary">Book a call</NavbarButton>
+            <NavbarButton variant="primary">Create Account</NavbarButton>
           </div>
         </NavBody>
 
@@ -73,7 +73,7 @@ export function NavbarDemo() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 variant="primary"
                 className="w-full">
-                Book a call
+                Create Account
               </NavbarButton>
             </div>
           </MobileNavMenu>
