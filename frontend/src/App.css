@@ -1,0 +1,26 @@
+.sideBar{
+    align-items: center;
+    justify-content: space-between;
+}
+
+.upperSide{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lowerSide{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.active{
+    opacity: 1;
+    width: 1.7rem;
+}
+
+.de-active{
+    opacity: 0.3;
+    width: 1.3rem;
+}
