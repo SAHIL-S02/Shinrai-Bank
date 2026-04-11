@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Footer = () => {
-  return (
+    return (
     <section className="py-2 bg-[#18181B] sm:pt-4 lg:pt-6">
     <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-8xl">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
