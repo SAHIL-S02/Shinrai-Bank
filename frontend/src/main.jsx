@@ -6,10 +6,8 @@ import SideBarContext from './contexts/SideBarContext';
 
 createRoot(document.getElementById('root')).render(
   <SideBarContext>
-  <BrowserRouter>
-    
+    <BrowserRouter>
       <App />
-    
-  </BrowserRouter>
+    </BrowserRouter>
   </SideBarContext>,
 )
