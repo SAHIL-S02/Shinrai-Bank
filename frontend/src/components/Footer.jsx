@@ -7,8 +7,6 @@ const Footer = () => {
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div className="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
                 <img className="w-auto h-9" src="https://cdn.rareblocks.xyz/collection/celebration/images/logo.svg" alt="" />
-
-
                 <ul className="flex items-center space-x-3 mt-9">
                     <li>
                         <a href="#" title="" className="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-7 h-7 hover:bg-blue-600 focus:bg-blue-600">
