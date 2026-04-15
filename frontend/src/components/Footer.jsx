@@ -35,7 +35,6 @@ const Footer = () => {
                             </svg>
                         </a>
                     </li>
-
                     <li>
                         <a href="#" title="" className="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-7 h-7 hover:bg-blue-600 focus:bg-blue-600">
                             <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -52,32 +51,24 @@ const Footer = () => {
             <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:gap-16 lg:gap-24">
                 <div>
                     <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">Company</p>
-
                     <ul className="mt-6 space-y-4">
                         <li>
                             <a href="#" title="" className="flex text-base text-white transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> About </a>
                         </li>
-
                         <li>
                             <a href="#" title="" className="flex text-base text-white transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Features </a>
                         </li>
                     </ul>
                 </div>
-
                 <div>
                     <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">Help</p>
-
                     <ul className="mt-6 space-y-4">
                         <li>
                             <a href="#" title="" className="flex text-base text-white transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Customer Support </a>
                         </li>
-
-                        
-
                         <li>
                             <a href="#" title="" className="flex text-base text-white transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Terms & Conditions </a>
                         </li>
-
                         <li>
                             <a href="#" title="" className="flex text-base text-white transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Privacy Policy </a>
                         </li>
@@ -85,14 +76,11 @@ const Footer = () => {
                 </div>
             </div>
         </div>
-
         <hr className="mt-6 mb-3 border-gray-200" />
-
         <p className="text-sm text-center text-gray-600">© Copyright 2021, All Rights Reserved by Postcraft</p>
     </div>
 </section>
-
-  )
+    )
 }
 
 export default Footer
