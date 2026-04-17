@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { useState } from 'react'
 const Footer = () => {
     return (
     <section className="py-2 bg-[#18181B] sm:pt-4 lg:pt-6">
