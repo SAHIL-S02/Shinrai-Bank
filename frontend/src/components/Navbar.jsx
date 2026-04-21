@@ -56,13 +56,13 @@ export function NavbarDemo() {
 
           <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
             {navItems.map((item, idx) => (
-              <a
+              <NavLink
                 key={`mobile-link-${idx}`}
-                href={item.link}
+                to={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="relative text-neutral-600 dark:text-neutral-300">
                 <span className="block">{item.name}</span>
-              </a>
+              </NavLink>
             ))}
             <div className="flex w-full flex-col gap-4">
               <NavbarButton
