@@ -39,9 +39,9 @@ export function NavbarDemo() {
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            <NavbarButton variant="secondary"><NavLink to="/login">Login</NavLink></NavbarButton>
+            <NavLink to="/login"><NavbarButton as="button" variant="secondary">Login</NavbarButton></NavLink>
             
-            <NavbarButton variant="primary"><NavLink to="/create-account">Create Account</NavLink></NavbarButton>
+            <NavLink to="/create-account"><NavbarButton as="button" variant="primary">Create Account</NavbarButton></NavLink>
           </div>
         </NavBody>
 
@@ -65,18 +65,22 @@ export function NavbarDemo() {
               </NavLink>
             ))}
             <div className="flex w-full flex-col gap-4">
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="primary"
-                className="w-full">
-                Login
-              </NavbarButton>
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="primary"
-                className="w-full">
-                Create Account
-              </NavbarButton>
+              <NavLink to="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
+                <NavbarButton
+                  as="button"
+                  variant="primary"
+                  className="w-full">
+                  Login
+                </NavbarButton>
+              </NavLink>
+              <NavLink to="/create-account" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
+                <NavbarButton
+                  as="button"
+                  variant="primary"
+                  className="w-full">
+                  Create Account
+                </NavbarButton>
+              </NavLink>
             </div>
           </MobileNavMenu>
         </MobileNav>
