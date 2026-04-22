@@ -9,6 +9,8 @@ import {
 } from "motion/react";
 
 import React, { useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
+
 
 
 export const Navbar = ({
@@ -91,19 +93,19 @@ export const NavItems = ({
         className
       )}>
       {items.map((item, idx) => (
-        <a
+        <NavLink
           onMouseEnter={() => setHovered(idx)}
           onClick={onItemClick}
           className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300"
           key={`link-${idx}`}
-          href={item.link}>
+          to={item.link}>
           {hovered === idx && (
             <motion.div
               layoutId="hovered"
               className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800" />
           )}
           <span className="relative z-20">{item.name}</span>
-        </a>
+        </NavLink>
       ))}
     </motion.div>
   );
@@ -191,16 +193,13 @@ export const MobileNavToggle = ({
 
 export const NavbarLogo = () => {
   return (
-    <a
-      href="#"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black">
-      <img
+      <NavLink to="/" className="relative z-20 w-[11%] flex justify-around items-center">
+        <img
         src="https://assets.aceternity.com/logo-dark.png"
         alt="logo"
-        width={30}
-        height={30} />
-      <span className="font-medium text-black dark:text-white">Shinrai Bank</span>
-    </a>
+        className="w-8 h-fit"/>
+        <h1 className="font-medium text-black dark:text-white">Shinrai Bank</h1>
+      </NavLink>
   );
 };
 

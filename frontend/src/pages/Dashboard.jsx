@@ -2,7 +2,7 @@ import React from 'react'
 import SideBar from '@/components/SideBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {QRCode} from "react-qr-code";
-import { faArrowUp, faArrowDown, faTurnUp, faTurnDown, faPaperPlane, faAddressBook, faBuildingColumns, faWallet } from '@fortawesome/free-solid-svg-icons'
+import {faHouseSignal, faSatelliteDish, faFireBurner, faCreditCard, faLightbulb, faMobile, faShare, faTurnUp, faTurnDown, faPaperPlane, faAddressBook, faBuildingColumns, faWallet } from '@fortawesome/free-solid-svg-icons'
 const Dashboard = () => {
   console.log("QRCode =", QRCode);
   return (
@@ -10,8 +10,8 @@ const Dashboard = () => {
         <section className='lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex' >
             <SideBar/>
             <div className='mainDashboard w-full flex flex-col m-9'>
-              <div className='mb-4'>
-                <h1 className='font-bold text-xl'>
+              <div className='mb-2'>
+                <h1 className='font-bold text-xl mb-1'>
                   Overview
                 </h1>
                 <h3 className='ml-3'>
@@ -68,7 +68,7 @@ const Dashboard = () => {
               </div>
               <div className='transactionsAndTransfers grid grid-cols-10 grid-rows-10 gap-4 w-full h-[450px] mt-3'>
                 <div className='transactions col-span-3 row-span-5 bg-white rounded-2xl p-4 shadow-2xl'>
-                  <h4 className='font-semibold text-lg mb-3'>
+                  <h4 className='font-semibold mb-3'>
                     Transactions
                   </h4>
                   <div className='ml-3 flex justify-between mb-3'>
@@ -164,14 +164,15 @@ const Dashboard = () => {
                 </div>
                 <div className='userDetails col-span-4 row-span-4 bg-white rounded-2xl p-6 shadow-2xl flex justify-between'>
                   <div className='flex flex-col'>
-                    <h2 className='font-bold'>
+                    <h2 className='font-bold text-gray-800 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]'>
                       SK SAHIL UDDIN
                     </h2>
-                    <p>+91 96473 97722</p>
-                    <p>Account Number: 9647397722</p>
-                    <p>
+                    <p className='text-sm ml-3 mt-1'>+91 96473 97722</p>
+                    <p className='text-sm ml-3 mt-1'>Account Number: 9647397722</p>
+                    <p className='text-sm ml-3 mt-1'>
                       UPI ID: 9647397722@shinrai
                     </p>
+                    <hr />
                   </div>
                   <div className='flex flex-col justify-center items-stretch'>
                     <QRCode
@@ -180,6 +181,73 @@ const Dashboard = () => {
                     />
                     <p className='text-xs mt-2'>9647397722@shinrai</p>
                   </div>
+                </div>
+                <div className='col-span-3 row-span-4 row-start-6 bg-white rounded-2xl p-4 shadow-2xll'>
+                  <h4 className='font-semibold mb-3'>
+                    Quick Transfer 
+                  </h4>
+                  <div className='flex items-center'>
+                    <input type="text" className='bg-white border-[#D1D3D4] border-2 shadow-md w-[70%] pl-3 pt-1 pb-1 rounded-md text-sm'  placeholder='UPI / Mobile Number'/>
+                    <div>
+                      <FontAwesomeIcon icon={faShare} className='text-[#7763E9] pl-2'></FontAwesomeIcon>
+                    </div>
+                  </div>
+                  <div className='shortCuts '>
+                    <div className='flex justify-around w-[70%] mt-4'>
+                      <div className='w-8 h-8 rounded-full bg-[#EF7780]  flex justify-center items-center text-xl font-bold'>
+                        P
+                      </div>
+                      <div className='w-8 h-8 rounded-full bg-[#D683A0] flex justify-center items-center text-xl font-bold'>
+                        S
+                      </div>
+                      <div className='w-8 h-8 rounded-full bg-[#AB97D9]  flex justify-center items-center text-xl font-bold'>
+                        A
+                      </div>
+                      <div className='w-8 h-8 rounded-full bg-[#94A3F8] flex justify-center items-center text-xl font-bold'>
+                        J
+                      </div>
+                      <div className='w-8 h-8 rounded-full border-2 border-black-900 border-dashed bg-transparent flex justify-center items-center text-xl font-bold'>
+                        +
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div className='bills flex flex-col justify-around pl-6 col-span-7 row-span-5 row-start-5  bg-white rounded-2xl p-4 shadow-2xll'>
+                  <div className='mb-2'>
+                    <h4 className='font-semibold mb-3'>
+                      Bill Payments
+                    </h4>
+                    {/* <hr /> */}
+                  </div>
+                  <div className='flex justify-around mb-4'>
+                    <div className='flex flex-col justify-center items-center'>
+                      <FontAwesomeIcon icon={faMobile} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                      <p className='text-center text-xs mt-1'>Mobile Recharge</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center'>
+                      <FontAwesomeIcon icon={faLightbulb} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                      <p className='text-center text-xs mt-1'>Electricity Bill</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center'>
+                      <FontAwesomeIcon icon={faCreditCard} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                      <p className='text-center text-xs mt-1'>Credit Card</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center'>
+                      <FontAwesomeIcon icon={faFireBurner} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                      <p className='text-center text-xs mt-1'>LPG Cylinder</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center'>
+                      <FontAwesomeIcon icon={faSatelliteDish} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                      <p className='text-center text-xs mt-1'>DTH Recharge</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center'>
+                      <FontAwesomeIcon icon={faHouseSignal} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                      <p className='text-center text-xs mt-1'>Broadband Bill</p>
+                    </div>
+                    
+                  </div>
+                  
                 </div>
               </div>
             </div>

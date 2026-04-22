@@ -16,16 +16,20 @@ import { NavLink } from "react-router-dom";
 export function NavbarDemo() {
   const navItems = [
     {
-      name: "Features",
-      link: "features",
+      name: "Home",
+      link: "",
     },
     {
-      name: "Pricing",
-      link: "pricing",
+      name: "Dashboard",
+      link: "dashboard",
     },
     {
       name: "Contact",
       link: "contact",
+    },
+    {
+      name: "About Us",
+      link: "about-us",
     },
   ];
 
@@ -38,7 +42,7 @@ export function NavbarDemo() {
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
-          <div className="flex items-center gap-4">
+          <div className="relative z-20 flex items-center gap-4">
             <NavLink to="/login"><NavbarButton as="button" variant="secondary">Login</NavbarButton></NavLink>
             
             <NavLink to="/create-account"><NavbarButton as="button" variant="primary">Create Account</NavbarButton></NavLink>

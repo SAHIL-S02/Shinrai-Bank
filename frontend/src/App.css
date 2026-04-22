@@ -15,12 +15,12 @@
     align-items: center;
 }
 
-.active{
+.activeB{
     opacity: 1;
     width: 1.7rem;
 }
 
-.de-active{
+.de-activeB{
     opacity: 0.3;
     width: 1.3rem;
 }
