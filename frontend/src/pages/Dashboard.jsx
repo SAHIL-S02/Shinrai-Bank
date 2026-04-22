@@ -1,8 +1,10 @@
 import React from 'react'
 import SideBar from '@/components/SideBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUp, faArrowDown, faTurnUp, faTurnDown } from '@fortawesome/free-solid-svg-icons'
+import {QRCode} from "react-qr-code";
+import { faArrowUp, faArrowDown, faTurnUp, faTurnDown, faPaperPlane, faAddressBook, faBuildingColumns, faWallet } from '@fortawesome/free-solid-svg-icons'
 const Dashboard = () => {
+  console.log("QRCode =", QRCode);
   return (
     <div className=''>
         <section className='lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex' >
@@ -64,7 +66,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className='transactionsAndTransfers grid grid-cols-10 grid-rows-10 gap-2 w-full h-[450px] mt-3'>
+              <div className='transactionsAndTransfers grid grid-cols-10 grid-rows-10 gap-4 w-full h-[450px] mt-3'>
                 <div className='transactions col-span-3 row-span-5 bg-white rounded-2xl p-4 shadow-2xl'>
                   <h4 className='font-semibold text-lg mb-3'>
                     Transactions
@@ -117,7 +119,68 @@ const Dashboard = () => {
                       +₹80,000
                     </div>
                   </div>
-                </div>  
+                </div>
+                <div className='transfer col-span-3 row-span-4 bg-white rounded-2xl p-4 shadow-2xl'>
+                  <div className='flex items-center mb-5'>
+                    <FontAwesomeIcon icon={faPaperPlane} className='text-[#7763EA] ml-1 mr-1'></FontAwesomeIcon>
+                  <h2 className='ml-1 mr-2 font-semibold'>
+                    Transfer
+                  </h2>
+                  </div>
+                  <div className='flex justify-between'>
+                    <div className='flex flex-col justify-center flex-wrap items-center'>
+                      <div>
+                        <FontAwesomeIcon icon={faAddressBook} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                      </div>
+                      <p className='text-xs text-center'>
+                        Pay Number
+                      </p>
+                    </div>
+                    <div className='flex flex-col justify-center flex-wrap items-center'>
+                      <div>
+                        <FontAwesomeIcon icon={faBuildingColumns} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                      </div>
+                      <p className='text-xs text-center'>
+                        Pay to Bank
+                      </p>
+                    </div>
+                    <div className='flex flex-col justify-center flex-wrap items-center'>
+                      <div className=''>
+                        <img src="/icons/upi.png" alt="" className='w-9 bg-[#F1F3F6] rounded-full p-1 mt-1 mb-1 shadow-md'/>
+                      </div>
+                      <p className='text-xs text-center'>
+                        Pay to UPI
+                      </p>
+                    </div>
+                    <div className='flex flex-col justify-center flex-wrap items-center'>
+                      <div>
+                        <FontAwesomeIcon icon={faWallet} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                      </div>
+                      <p className='text-xs text-center'>
+                        Check Balance
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className='userDetails col-span-4 row-span-4 bg-white rounded-2xl p-6 shadow-2xl flex justify-between'>
+                  <div className='flex flex-col'>
+                    <h2 className='font-bold'>
+                      SK SAHIL UDDIN
+                    </h2>
+                    <p>+91 96473 97722</p>
+                    <p>Account Number: 9647397722</p>
+                    <p>
+                      UPI ID: 9647397722@shinrai
+                    </p>
+                  </div>
+                  <div className='flex flex-col justify-center items-stretch'>
+                    <QRCode
+                      value="upi://pay?pa=9647397722@shinrai&pn=SK SAHIL UDDIN"
+                      size={120}
+                    />
+                    <p className='text-xs mt-2'>9647397722@shinrai</p>
+                  </div>
+                </div>
               </div>
             </div>
         </section>
