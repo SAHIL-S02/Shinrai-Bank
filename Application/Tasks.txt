@@ -1,0 +1,105 @@
+🔹 1. Account Management Requests
+
+These are the most frequent user actions.
+
+Open New Account (Savings / Current)
+Close Account
+Account Upgrade (Savings → Premium)
+Change Account Type
+Joint Account Request
+
+
+🔹 2. KYC & Identity Services
+
+Critical for compliance and security.
+
+Full KYC Submission (Aadhaar, PAN upload)
+Re-KYC / Update KYC
+Address Change
+Name Correction / Change
+DOB Correction
+Profile Photo Update
+
+
+🔹 3. Card Services
+
+Very common in real banking apps.
+
+Apply for Debit Card
+Apply for Credit Card
+Block / Unblock Card
+Replace Lost/Damaged Card
+Set Card Limits (ATM / Online / POS)
+Generate / Change PIN
+
+
+🔹 4. Loan & Credit Services
+
+Adds serious value to your app.
+
+Apply for Personal Loan
+Apply for Home Loan
+Apply for Education Loan
+Loan Status Tracking
+EMI Calculator
+Prepayment Request
+
+
+🔹 5. Contact & Communication Updates
+Change Mobile Number
+Change Email ID
+Add Alternate Contact
+Notification Preferences (SMS / Email / App)
+
+
+🔹 6. Transaction & Limit Controls
+Increase Transaction Limit
+Enable / Disable International Transactions
+Set Daily Spending Limit
+Freeze / Unfreeze Account
+
+
+🔹 7. Cheque & Payment Services
+Request Cheque Book
+Stop Cheque Payment
+View Cheque Status
+Add / Manage Beneficiary
+Schedule Payments
+
+
+🔹 8. Internet Banking & Security
+Activate Net Banking
+Reset Password
+Enable 2FA / OTP Settings
+Device Management (logout from all devices)
+Login Activity Logs
+
+
+🔹 9. Complaints & Support System
+
+Often ignored—but very important.
+
+Raise Complaint / Ticket
+Track Complaint Status
+Chat Support / Helpdesk
+Dispute Transaction
+
+
+🔹 10. Document & Statement Services
+Download Account Statement
+Request Physical Statement
+Download Interest Certificate
+Tax Documents (Form 16 / 26AS-like)
+
+
+🔹 11. Nominee & Relationship Management
+Add / Update Nominee
+Remove Nominee
+Relationship Update
+
+
+🔹 12. Misc Advanced Features (Optional but impressive)
+Investment Services (FD / RD / Mutual Funds)
+Insurance Purchase
+Credit Score Check
+Rewards & Cashback Dashboard

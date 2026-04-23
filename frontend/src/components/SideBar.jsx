@@ -2,8 +2,13 @@ import React, { useState } from 'react'
 import { useContext } from 'react'
 import { SideBarContextInfo } from '@/contexts/SideBarContext'
 import { useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPenToSquare, faClockRotateLeft, faPercent, faFileInvoice} from '@fortawesome/free-solid-svg-icons'
+import { faF } from '@fortawesome/free-solid-svg-icons/faF';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const SideBar = () => {
+    const navigate = useNavigate();
     const {sideBar, setSideBar} = useContext(SideBarContextInfo);
     useEffect(() => {
     console.log(sideBar);
@@ -11,20 +16,25 @@ const SideBar = () => {
     return (
     <div className='sideBar w-16 lg:min-h-[800px] lg:max-h-[900px] bg-red flex flex-col bg-[#FFFFFF]'>
         <div className='upperSide'>
-            <div className={`dashboardIconDiv drop-shadow-lg   mt-5 mb-5 ${sideBar == "dashboard"? "activeB" : "de-activeB"}`} onClick={() => setSideBar("dashboard")}>
+            <div className={`dashboardIconDiv drop-shadow-lg flex flex-col justify-center items-center   mt-5 mb-5 ${sideBar == "dashboard"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("dashboard"); navigate("/dashboard")}}>
                 <img className='rounded-md' src="/icons/dashboard.png" alt="Dashboard" />
+                <p className='text-[9px]'>Dashboard</p>
             </div>
-            <div className={`walletIconDiv drop-shadow-lg  mt-5 mb-5 ${sideBar == "wallet"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("wallet")}}>
-                <img className='rounded-md' src="/icons/wallet.png" alt="Wallet" />
+            <div className={`applicationIconDiv flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "wallet"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("application"); navigate("/application")}}>
+                <FontAwesomeIcon icon={faPenToSquare} className='text-[#C55EDA] text-xl'></FontAwesomeIcon>
+                <p className='text-[9px]'>Application</p>
             </div>
-            <div className={`historyIconDiv drop-shadow-lg  mt-5 mb-5 ${sideBar == "history"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("history")}}>
-                <img className='rounded-md' src="/icons/history.png" alt="History" />
+            <div className={`historyIconDiv flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "history"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("history"); navigate("/history")}}>
+                <FontAwesomeIcon icon={faClockRotateLeft} className='text-[#C55EDA] text-xl'></FontAwesomeIcon>
+                <p className='text-[9px]'>History</p>
             </div>
-            <div className={`loanIconDiv drop-shadow-lg w-[1.8rem] mt-5 mb-5 ${sideBar == "loan"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("loan")}}>
-                <img className='rounded-md' src="/icons/loan.png" alt="Loan" />
+            <div className={`loanIconDiv flex flex-col justify-center items-center drop-shadow-lg w-[1.8rem] mt-5 mb-5 ${sideBar == "loan"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("loan"); navigate("/loan")}}>
+                <FontAwesomeIcon icon={faPercent} className='text-[#C55EDA] text-xl'></FontAwesomeIcon> 
+                <p className='text-[9px]'>Loan</p>
             </div>
-            <div className={`investmentIconDiv drop-shadow-lg  mt-5 mb-5 ${sideBar == "investment"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("investment")}}>
-                <img className='rounded-md' src="/icons/investment.png" alt="Investment" />
+            <div className={`investmentIconDiv flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "investment"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("investment"); navigate("/investment")}}>
+                <FontAwesomeIcon icon={faFileInvoice} className='text-[#C55EDA] text-xl'></FontAwesomeIcon> 
+                <p className='text-[9px]'>Statement</p>
             </div>
         </div>
         <div className='lowerSide'>
