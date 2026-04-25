@@ -20,8 +20,8 @@ const SideBar = () => {
                 <img className='rounded-md' src="/icons/dashboard.png" alt="Dashboard" />
                 <p className='text-[9px] cursor-pointer'>Dashboard</p>
             </div>
-            <div className={`applicationIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "application"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("application"); navigate("/application"); console.log("Application")}}>
-                <FontAwesomeIcon icon={faPenToSquare} className={`text-[#C55EDA]  ${sideBar == "application"? "text-2xl" : "text-xl"}`}></FontAwesomeIcon>
+            <div className={`applicationIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${(sideBar == "application" || sideBar == "account-management" || sideBar == "kyc-identity" || sideBar == "card-services" || sideBar == "loan-credit-services" || sideBar == "contact-update" || sideBar == "cheque-services" || sideBar == "internet-banking")? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("application"); navigate("/application"); console.log("Application")}}>
+                <FontAwesomeIcon icon={faPenToSquare} className={`text-[#C55EDA]  ${(sideBar == "application" || sideBar == "account-management" || sideBar == "kyc-identity" || sideBar == "card-services" || sideBar == "loan-credit-services" || sideBar == "contact-update" || sideBar == "cheque-services" || sideBar == "internet-banking")? "text-2xl" : "text-xl"}`}></FontAwesomeIcon>
                 <p className='text-[9px] cursor-pointer'>Application</p>
             </div>
             <div className={`historyIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "history"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("history"); navigate("/history")}}>
@@ -29,7 +29,7 @@ const SideBar = () => {
                 <p className='text-[9px] cursor-pointer'>History</p>
             </div>
             <div className={`loanIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg w-[1.8rem] mt-5 mb-5 ${sideBar == "loan"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("loan"); navigate("/loan")}}>
-                <FontAwesomeIcon icon={faPercent} className={`text-[#C55EDA]  ${sideBar == "loan"? "text-2xl" : "text-xl"}`}></FontAwesomeIcon> 
+                <FontAwesomeIcon icon={faPercent} className={`text-[#C55EDA]  ${(sideBar == "loan")? "text-2xl" : "text-xl"}`}></FontAwesomeIcon> 
                 <p className='text-[9px] cursor-pointer'>Loan</p>
             </div>
             <div className={`investmentIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "investment"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("investment"); navigate("/investment")}}>

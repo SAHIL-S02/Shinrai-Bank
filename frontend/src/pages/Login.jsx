@@ -13,6 +13,7 @@ export const Login = () => {
     const [form, setForm] = useState({
     mobile: "",
     accountType: "",
+    password:"",
     });
 
     const handleChange = (e) => {
@@ -77,6 +78,16 @@ export const Login = () => {
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
                     </div>
+                </div>
+                {/* Password */}
+                <div className="space-y-2 w-full md:w-1/2 lg:w-1.5/2 p-1 md:p-2">
+                    <label className="text-sm font-medium text-zinc-300">Password</label>
+                    <input type="password"
+                        name="password"
+                        placeholder="Enter a Password"
+                        onChange={handleChange}
+                        className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+                    />
                 </div>
                 {/* ReCAPTCHA */}
                 <ReCAPTCHA className="" sitekey={`${RECAPTCHA_SITE_KEY}`} onChange={handleCaptcha}/>

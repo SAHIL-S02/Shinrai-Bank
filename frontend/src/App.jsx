@@ -9,6 +9,13 @@ import Dashboard from './pages/Dashboard'
 import { Login } from './pages/Login'
 import Application from './pages/Application'
 import { SideBarContextInfo } from './contexts/SideBarContext'
+import AccountManagement from './pages/AccountManagement'
+import KYC from './pages/KYC'
+import CardServices from './pages/CardServices'
+import LoanServices from './pages/LoanServices'
+import ContactServices from './pages/ContactServices'
+import ChequeServices from './pages/ChequeServices'
+import InternetBanking from './pages/InternetBanking'
 
 function App() {
   const {sideBar, setSideBar} = useContext(SideBarContextInfo);
@@ -26,6 +33,13 @@ function App() {
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/application" element={<Application/>}/>
+        <Route path="/account-management" element={<AccountManagement/>}/>
+        <Route path="/kyc-identity" element={<KYC/>}/>
+        <Route path='/card-services' element={<CardServices/>}/>
+        <Route path='/loan-credit-services' element={<LoanServices/>}/>  
+        <Route path='/contact-update' element={<ContactServices/>}/>
+        <Route path='/cheque-services' element={<ChequeServices/>}/>
+        <Route path='/internet-banking' element={<InternetBanking/>}/>
       </Routes>
       {!hideLayout && <Footer />}
     </>
