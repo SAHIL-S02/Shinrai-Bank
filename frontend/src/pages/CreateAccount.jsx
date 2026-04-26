@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { registerUser } from "@/services/api";
+import { useNavigate } from "react-router-dom";
 
 export const CreateAccount = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     aadharNumber: "",
@@ -10,15 +13,25 @@ export const CreateAccount = () => {
     accountType: "",
     balance: "",
     nickname: "",
+    password: "",
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    try {
+      const response = await registerUser(form);
+      alert(response);
+      if (response === "User registered successfully!") {
+        navigate("/login");
+      }
+    } catch (err) {
+      alert("Registration failed. Please try again.");
+      console.error(err);
+    }
   };
 
   return (
@@ -88,6 +101,17 @@ export const CreateAccount = () => {
               type="email"
               name="email"
               placeholder="sahil@example.com"
+              onChange={handleChange}
+              className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-300">Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="••••••••"
               onChange={handleChange}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
             />

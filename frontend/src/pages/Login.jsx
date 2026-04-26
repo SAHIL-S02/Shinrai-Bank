@@ -1,11 +1,13 @@
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-
+import { loginUser } from "@/services/api";
 
 export const Login = () => {
     const [captcha, setCaptcha] = useState(null);
     const [verified, setVerified] = useState(false);
+    const [loading, setLoading] = useState(false);
     const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+    
     const handleCaptcha = (token) => {
         setCaptcha(token);
         setVerified(true); // TEMP: assume valid
@@ -20,7 +22,7 @@ export const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     if (!verified) {
         alert("Please complete CAPTCHA");
@@ -28,6 +30,26 @@ export const Login = () => {
     }
     console.log("Form submitted with token:", captcha);
     console.log(form);
+    setLoading(true);
+
+    try {
+        const data = {
+            mobile: form.mobile,
+            password: form.password
+        };
+        const token = await loginUser(data);
+        
+        // Save the JWT token
+        localStorage.setItem("token", token);
+        alert("Login Successful!");
+        
+        // Optionally redirect the user or update application state
+        // window.location.href = "/dashboard";
+    } catch (error) {
+        alert("Login Failed: " + error.message);
+    } finally {
+        setLoading(false);
+    }
     };
     return (
     <section className="min-h-screen relative flex items-center justify-center p-4 bg-zinc-950 overflow-hidden text-zinc-100">
@@ -51,10 +73,11 @@ export const Login = () => {
             </div>
             
             <div className="flex flex-col md:flex-col gap-1 justify-center items-center">
-                {/* Mobile number */}
+                {/* Mobile */}
                 <div className="space-y-2 w-full md:w-1/2 lg:w-1.5/2 p-1 md:p-2">
                     <label className="text-sm font-medium text-zinc-300">Mobile Number</label>
                     <input
+                        type="tel"
                         name="mobile"
                         placeholder="+91 96473 97722"
                         onChange={handleChange}
