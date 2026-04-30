@@ -70,7 +70,6 @@ export const Login = () => {
                 Join Shinrai Bank and start your journey towards financial freedom.
                 </p>
             </div>
-            
             <div className="flex flex-col md:flex-col gap-1 justify-center items-center">
                 {/* Mobile */}
                 <div className="space-y-2 w-full md:w-1/2 lg:w-1.5/2 p-1 md:p-2">
