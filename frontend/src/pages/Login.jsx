@@ -7,7 +7,6 @@ export const Login = () => {
     const [verified, setVerified] = useState(false);
     const [loading, setLoading] = useState(false);
     const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-    
     const handleCaptcha = (token) => {
         setCaptcha(token);
         setVerified(true); // TEMP: assume valid
@@ -17,7 +16,6 @@ export const Login = () => {
     accountType: "",
     password:"",
     });
-
     const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     };
