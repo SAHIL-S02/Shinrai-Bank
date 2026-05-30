@@ -1,0 +1,12 @@
+import mongoose from "mongoose";
+import config from "./config.js";
+async function connectDatabase (){
+    try{
+        await mongoose.connect(config.MONGODB_URI);
+        console.log("database connected successfully")
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export default connectDatabase;
