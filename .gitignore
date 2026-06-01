@@ -15,16 +15,7 @@ Thumbs.db
 application.properties
 application.yml
 
-# ===============================
-# JAVA / SPRING BOOT
-# ===============================
-/backend/bankapp/target/
-*.class
-*.jar
-*.war
 
-# Maven wrapper logs
-/backend/bankapp/.mvn/wrapper/maven-wrapper.jar
 
 # ===============================
 # IDE FILES
@@ -37,6 +28,7 @@ application.yml
 # NODE / REACT (FRONTEND)
 # ===============================
 /frontend/node_modules/
+/backend/node_modules/
 /frontend/dist/
 /frontend/build/
 npm-debug.log*
