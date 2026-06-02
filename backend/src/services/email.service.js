@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 // Verify the connection configuration
 transporter.verify((error, success) => {
     if (error) {
-        console.error('❌ Email server connection failed:');
+        console.error('Email server connection failed:');
         if (error.code === 'EAUTH') {
             console.error("   OAuth2 Authentication Error");
             console.error("   Possible causes:");
@@ -27,12 +27,8 @@ transporter.verify((error, success) => {
         } else {
             console.error(`   Error: ${error.message}`);
         }
-        console.error("\n📋 Please verify your Google OAuth2 credentials in the .env file");
-        console.error("📖 To generate a new refresh token:");
-        console.error("   1. Visit: https://myaccount.google.com/permissions");
-        console.error("   2. Find 'Shinrai Bank' or similar app and reconnect\n");
     } else {
-        console.log('✅ Email server is ready to send messages');
+        console.log('Email server is ready to send messages');
     }
 });
     
@@ -49,10 +45,10 @@ const sendEmail = async (to, subject, text, html) => {
             html,
         });
 
-        console.log('✅ Message sent: %s', info.messageId);
+        console.log('Message sent: %s', info.messageId);
         return info;
     } catch (error) {
-        console.error('❌ Error sending email:', error.message);
+        console.error('Error sending email:', error.message);
         throw error;
     }
 };
