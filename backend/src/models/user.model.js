@@ -15,11 +15,11 @@ const userSchema = mongoose.Schema({
         required:[true, "Phone number is required"],
         unique: [true, "Phone number already exist"]
     },
-    // addharNumber:{
-    //     type: Number,
-    //     required:[true, "Aadhar number is required"],
-    //     unique: [true, "Phone number already exist"]
-    // },
+    aadharNumber:{
+        type: Number,
+        required:[true, "Aadhar number is required"],
+        unique: [true, "Aadhar number already exist"]
+    },
     dob:{
         type:Date,
         required:[true, "Phone number is required"],
