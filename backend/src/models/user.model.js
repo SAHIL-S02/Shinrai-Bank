@@ -22,8 +22,7 @@ const userSchema = mongoose.Schema({
     },
     dob:{
         type:Date,
-        required:[true, "Phone number is required"],
-        unique: [true, "Phone number already exist"]
+        required:[true, "Date of Birth is required"],
     },
     accountType:{
         type:String,

@@ -1,9 +1,9 @@
-export const generateOTP = () => {
+export const generateOtp = () => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     return otp;
 }
 
-export const htmlOTP = (otp) => {
+export const htmlOtp = (otp) => {
     return `
         <div style="background-color: #f2f2f2; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
             <h2 style="color: #333;">Your OTP Code</h2>
