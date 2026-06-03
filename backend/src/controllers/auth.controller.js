@@ -178,7 +178,7 @@ export async function verify(req, res){
         })
     }
     const OTP_EXPIRE_TIME = 10 * 60 * 1000 // 10 Minutes
-    if(Date.now() - otp.createdAt.getTime > OTP_EXPIRE_TIME){
+    if(Date.now() - otp.createdAt.getTime() > OTP_EXPIRE_TIME){
         return res.status(410).json({
             success:false,
             message:"OTP is expired"
