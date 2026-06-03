@@ -7,7 +7,7 @@ import otpModel from "../models/otp.model.js";
 import sessionModel from "../models/session.model.js";
 import config from "../config/config.js";
 import { access } from "fs";
-
+import bcrypt from "bcrypt"
 export async function otpTest(req, res){
     const {email} = req.body;
     if(!email){
@@ -64,7 +64,7 @@ export async function register(req, res){
         })
     }
     //hashPassword
-    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    const hashedPassword = await bcrypt.hash(password, 10);
     const otp = generateOtp();
     const html = htmlOtp(otp);
     const hashedOtp = crypto.createHash("sha256").update(otp.toString()).digest("hex");
@@ -83,6 +83,15 @@ export async function register(req, res){
             otp:hashedOtp
         });
         await sendEmail(email, "Your OTP Code", `Your OTP code is ${otp}`, html);
+        res.status(201).json({
+            success:true,
+            message:"User is registered",
+            user:{
+                name:name,
+                email:email,
+                phoneNumber:phoneNumber
+            }
+        });
     }catch(error){
         return res.status(400).json({
             success:false,
@@ -90,20 +99,12 @@ export async function register(req, res){
         })
     }
     
-    res.status(201).json({
-        success:true,
-        message:"User is registered",
-        user:{
-            name:name,
-            email:email,
-            phoneNumber:phoneNumber
-        }
-    });
+    
 }
 
 export async function login(req, res){
     const {email, password} = req.body;
-    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    
     const user = await userModel.findOne({email});
     if(!user){
         return res.status(404).json({
@@ -111,18 +112,18 @@ export async function login(req, res){
             message:"User not found"
         })
     }
+    
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if(!checkPassword){
+        return res.status(401).json({
+            success:false,
+            message:"User password invalid"
+        })
+    }
     if(!user.verified){
         return res.status(403).json({
             success:false,
             message:"User is not verified by email",
-        })
-    }
-
-    const checkPassword = (user.password === hashedPassword);
-    if(!checkPassword){
-        res.status(401).json({
-            success:false,
-            message:"User password invalid"
         })
     }
     const refreshToken = jwt.sign({
@@ -162,16 +163,27 @@ export async function login(req, res){
 export async function verify(req, res){
     const {email, otp} = req.body;
     const hashedOtp = crypto.createHash("sha256").update(otp.toString()).digest("hex");
-    console.log(hashedOtp);
     const otpData = await otpModel.findOne({email, otp:hashedOtp});
     if(!otpData){
         return res.status(401).json({
             success: false,
-            message:"OTP is incorrect",
-            otp:hashedOtp,
+            message:"OTP is incorrect or Expired",
         })
     }
     const user = await userModel.findById(otpData.user);
+    if(!user){
+        return res.status(404).json({
+            success:false,
+            message:"User not found"
+        })
+    }
+    const OTP_EXPIRE_TIME = 10 * 60 * 1000 // 10 Minutes
+    if(Date.now() - otp.createdAt.getTime > OTP_EXPIRE_TIME){
+        return res.status(410).json({
+            success:false,
+            message:"OTP is expired"
+        });
+    }
     user.verified = true;
     await user.save();
     res.status(200).json({
@@ -195,7 +207,7 @@ export async function getData(req, res){
         if(!user){
             return res.status(401).json({
                 success:false,
-                message:"Invalide token"
+                message:"Invalid token"
             })
         }
         if(!user.verified){
@@ -215,7 +227,7 @@ export async function getData(req, res){
     }catch(e){
         return res.status(401).json({
             success:true,
-            message:"Invalide token"
+            message:"Invalid token"
         })
     }
 }
