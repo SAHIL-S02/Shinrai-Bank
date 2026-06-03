@@ -167,7 +167,7 @@ export async function verify(req, res){
     if(!otpData){
         return res.status(401).json({
             success: false,
-            message:"OTP in incorrect",
+            message:"OTP is incorrect",
             otp:hashedOtp,
         })
     }
