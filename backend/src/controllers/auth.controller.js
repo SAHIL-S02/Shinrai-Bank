@@ -8,6 +8,7 @@ import sessionModel from "../models/session.model.js";
 import config from "../config/config.js";
 import { access } from "fs";
 import bcrypt from "bcrypt"
+
 export async function otpTest(req, res){
     const {email} = req.body;
     if(!email){
@@ -24,7 +25,7 @@ export async function otpTest(req, res){
         message: "OTP sent successfully"
     });
 }
-
+//register
 export async function register(req, res){
     const {name, email, phoneNumber, password, aadharNumber, dob} = req.body;
     if(!name){

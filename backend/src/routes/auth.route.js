@@ -9,4 +9,5 @@ authRouter.post("/verify", authController.verify);
 authRouter.post("/login", authController.login);
 //get data
 authRouter.get("/get-data", authController.getData);
+
 export default authRouter;
