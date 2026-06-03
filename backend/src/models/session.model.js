@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const sessionSchema = mongoose.Schema({
     user:{
         type:mongoose.Schema.ObjectId,
+        ref:"user",
         required:true,
     },
     refreshToken:{
