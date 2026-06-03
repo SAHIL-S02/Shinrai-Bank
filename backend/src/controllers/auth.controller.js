@@ -9,22 +9,22 @@ import config from "../config/config.js";
 import { access } from "fs";
 import bcrypt from "bcrypt"
 
-export async function otpTest(req, res){
-    const {email} = req.body;
-    if(!email){
-        return res.status(400).json({
-            success: false,
-            message: "Email is required"
-        })
-    }
-    const otp = generateOtp();
-    const html = htmlOtp(otp);
-    await sendEmail(email, "Your OTP Code", `Your OTP code is ${otp}`, html);
-    return res.status(200).json({
-        success: true,
-        message: "OTP sent successfully"
-    });
-}
+// export async function otpTest(req, res){
+//     const {email} = req.body;
+//     if(!email){
+//         return res.status(400).json({
+//             success: false,
+//             message: "Email is required"
+//         })
+//     }
+//     const otp = generateOtp();
+//     const html = htmlOtp(otp);
+//     await sendEmail(email, "Your OTP Code", `Your OTP code is ${otp}`, html);
+//     return res.status(200).json({
+//         success: true,
+//         message: "OTP sent successfully"
+//     });
+// }
 //register
 export async function register(req, res){
     const {name, email, phoneNumber, password, aadharNumber, dob} = req.body;
@@ -102,7 +102,7 @@ export async function register(req, res){
     
     
 }
-
+//login 
 export async function login(req, res){
     const {email, password} = req.body;
     
@@ -160,7 +160,7 @@ export async function login(req, res){
         accessToken:accessToken
     })
 }
-
+//login
 export async function verify(req, res){
     const {email, otp} = req.body;
     const hashedOtp = crypto.createHash("sha256").update(otp.toString()).digest("hex");
@@ -192,7 +192,7 @@ export async function verify(req, res){
         message: "OTP verified"
     })
 }
-
+//get-data
 export async function getData(req, res){
     try{
         const accessToken = req.headers.authorization?.split(" ")[1];
