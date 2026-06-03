@@ -1,7 +1,12 @@
 import { Router } from "express";
 import * as authController from "../controllers/auth.controller.js";
 const authRouter = Router();
+//register 
 authRouter.post("/register", authController.register);
-authRouter.post("/otp-test", authController.otpTest);
-
+//Verify email 
+authRouter.post("/verify", authController.verify);
+//login
+authRouter.post("/login", authController.login);
+//get data
+authRouter.get("/get-data", authController.getData);
 export default authRouter;
