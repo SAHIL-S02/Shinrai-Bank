@@ -4,7 +4,9 @@ import jwt from "jsonwebtoken";
 import sendEmail from "../services/email.service.js";
 import {generateOtp, htmlOtp} from "../utils/otp.util.js";
 import otpModel from "../models/otp.model.js";
-
+import sessionModel from "../models/session.model.js";
+import config from "../config/config.js";
+import { access } from "fs";
 
 export async function otpTest(req, res){
     const {email} = req.body;
@@ -98,6 +100,65 @@ export async function register(req, res){
         }
     });
 }
+
+export async function login(req, res){
+    const {email, password} = req.body;
+    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    const user = await userModel.findOne({email});
+    if(!user){
+        return res.status(404).json({
+            success:false,
+            message:"User not found"
+        })
+    }
+    if(!user.verified){
+        return res.status(403).json({
+            success:false,
+            message:"User is not verified by email",
+        })
+    }
+
+    const checkPassword = (user.password === hashedPassword);
+    if(!checkPassword){
+        res.status(401).json({
+            success:false,
+            message:"User password invalid"
+        })
+    }
+    const refreshToken = jwt.sign({
+        id:user._id,
+    }, config.JWT_URI,{
+        expiresIn: "7d",
+    });
+    const hashedRefreshToken = crypto.createHash("sha256").update(refreshToken).digest("hex");
+    await sessionModel.create({
+        user:user._id,
+        refreshToken:hashedRefreshToken,
+        ip:req.ip,
+        userAgent:req.headers["user-agent"]
+    });
+    const accessToken = jwt.sign({
+        id:user._id,
+    },config.JWT_URI, {
+        expiresIn:"15m"
+    });
+    res.cookie("refreshToken", refreshToken,{
+        httpOnly: true,
+        sameSite: true,
+        secure: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    })
+    res.status(200).json({
+        success:true,
+        message:"User login successfully",
+        user:{
+            name:user.name,
+            email:user.email,
+        },
+        accessToken:accessToken
+    })
+}
+
 export async function verify(req, res){
     const {email, otp} = req.body;
     const hashedOtp = crypto.createHash("sha256").update(otp.toString()).digest("hex");
@@ -117,4 +178,44 @@ export async function verify(req, res){
         success:true,
         message: "OTP verified"
     })
+}
+
+export async function getData(req, res){
+    try{
+        const accessToken = req.headers.authorization?.split(" ")[1];
+        if(!accessToken){
+            return res.status(401).json({
+                success: false,
+                message: "Access token is required"
+            });
+        }
+        const decode = jwt.verify(accessToken, config.JWT_URI);
+        
+        const user = await userModel.findById(decode.id);
+        if(!user){
+            return res.status(401).json({
+                success:false,
+                message:"Invalide token"
+            })
+        }
+        if(!user.verified){
+            return res.status(403).json({
+                success:false,
+                message:"User not verified"
+            });
+        }
+        return res.status(200).json({
+            success:true,
+            message:"User data found",
+            user:{
+                name:user.name,
+                email:user.email
+            }
+        })
+    }catch(e){
+        return res.status(401).json({
+            success:true,
+            message:"Invalide token"
+        })
+    }
 }
