@@ -5,6 +5,54 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, "Name is required"],
     },
+    nickName:{
+        type:String,
+
+    },
+    currency: {
+        type: String,
+        default: "INR",
+    },
+    branchCode: {
+        type: String,
+        default: "Shinrai Branch of India"
+    },
+
+    ifscCode: {
+        type: String,
+        default: "SHIN02042007"
+    },
+
+    status: {
+        type: String,
+        enum: ["ACTIVE", "FROZEN", "CLOSED", "SUSPENDED"],
+        default: "ACTIVE",
+    },
+
+    dailyTransferLimit: {
+        type: Number,
+        default: 100000,
+    },
+    monthlyTransferLimit: {
+        type: Number,
+        default: 1000000,
+    },
+
+    kycVerified: {
+        type: Boolean,
+        default: false,
+    },
+
+    interestRate: {
+        type: Number,
+        default: 0,
+    },
+
+    nominee: {
+        name: String,
+        relation: String,
+        phone: String,
+    },
     email:{
         type: String,
         required: [true, "Email is required"],
@@ -20,13 +68,17 @@ const userSchema = mongoose.Schema({
         required:[true, "Aadhar number is required"],
         unique: [true, "Aadhar number already exist"]
     },
+    address:{
+        type:String,
+    },
     dob:{
         type:Date,
         required:[true, "Date of Birth is required"],
     },
     accountType:{
         type:String,
-        default: "Saving"
+        default: "SAVINGS",
+        enum: ["SAVINGS", "CURRENT", "SALARY", "FIXED_DEPOSIT"],
     },
     password:{
         type:String,

@@ -16,13 +16,13 @@ import LoanServices from './pages/LoanServices'
 import ContactServices from './pages/ContactServices'
 import ChequeServices from './pages/ChequeServices'
 import InternetBanking from './pages/InternetBanking'
-
+import OtpVerification from './pages/OtpVerification'
 function App() {
   const {sideBar, setSideBar} = useContext(SideBarContextInfo);
   const location = useLocation()
   const currentLocation = location.pathname
   setSideBar(currentLocation.slice(1));
-  const hideLayout = location.pathname === '/create-account' || location.pathname.startsWith('/create-account/') || location.pathname === '/login' || location.pathname.startsWith('/login/')
+  const hideLayout = location.pathname === '/create-account' || location.pathname.startsWith('/create-account/') || location.pathname === '/login' || location.pathname.startsWith('/login/')|| location.pathname === '/otp' || location.pathname.startsWith('/otp/')
 
   return (
     <>
@@ -31,7 +31,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/create-account" element={<CreateAccount />} />
-        <Route path="/Login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/otp" element={<OtpVerification />} />
         <Route path="/application" element={<Application/>}/>
         <Route path="/account-management" element={<AccountManagement/>}/>
         <Route path="/kyc-identity" element={<KYC/>}/>

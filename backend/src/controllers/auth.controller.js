@@ -27,6 +27,13 @@ import bcrypt from "bcrypt"
 // }
 //register
 export async function register(req, res){
+    if(!req.body){
+        return res.status(400).json({
+            success: false,
+            message: "No data found"
+        })
+    }
+    console.log(req.body);
     const {name, email, phoneNumber, password, aadharNumber, dob} = req.body;
     if(!name){
         return res.status(400).json({
@@ -94,10 +101,12 @@ export async function register(req, res){
             }
         });
     }catch(error){
+        console.error(error);
         return res.status(400).json({
             success:false,
             message:error.message,
-        })
+            errors:error.errors
+        });
     }
     
     
@@ -178,13 +187,13 @@ export async function verify(req, res){
             message:"User not found"
         })
     }
-    const OTP_EXPIRE_TIME = 10 * 60 * 1000 // 10 Minutes
-    if(Date.now() - otp.createdAt.getTime() > OTP_EXPIRE_TIME){
-        return res.status(410).json({
-            success:false,
-            message:"OTP is expired"
-        });
-    }
+    // const OTP_EXPIRE_TIME = 10 * 60 * 1000 // 10 Minutes
+    // if(Date.now() - otp.createdAt.getTime() > OTP_EXPIRE_TIME){
+    //     return res.status(410).json({
+    //         success:false,
+    //         message:"OTP is expired"
+    //     });
+    // }
     user.verified = true;
     await user.save();
     res.status(200).json({
