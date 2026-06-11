@@ -4,12 +4,18 @@ import App from './App.jsx'
 import { BrowserRouter } from "react-router-dom";
 import SideBarContext from './contexts/SideBarContext';
 import UserTempContext from './contexts/UserTempContext';
+import AccessTokenContext from './contexts/AccessTokenContext';
+
+
+
 createRoot(document.getElementById('root')).render(
-  <UserTempContext>
-    <SideBarContext>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </SideBarContext>
-  </UserTempContext>,
+  <AccessTokenContext>
+    <UserTempContext>
+      <SideBarContext>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SideBarContext>
+    </UserTempContext>
+  </AccessTokenContext>,
 )

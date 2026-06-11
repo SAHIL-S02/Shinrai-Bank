@@ -113,9 +113,9 @@ export async function register(req, res){
 }
 //login 
 export async function login(req, res){
-    const {email, password} = req.body;
+    const {email, password, accountType} = req.body;
     
-    const user = await userModel.findOne({email});
+    const user = await userModel.findOne({email, accountType});
     if(!user){
         return res.status(404).json({
             success:false,
@@ -169,7 +169,52 @@ export async function login(req, res){
         accessToken:accessToken
     })
 }
-//login
+//refresh
+export async function refreshToken(req,res){ // refresh access token using a valid refresh token cookie
+    const refreshToken = req.cookies.refreshToken; // read refresh token from cookies
+    if(!refreshToken){
+        return res.status(401).json({
+            message: "Refresh Token Not Found"
+        })
+    }
+    const decode = jwt.verify(refreshToken, config.JWT_URI); // verify that the refresh token is valid
+    const hashedRefreshToken = crypto.createHash("sha256").update(refreshToken).digest("hex"); // hash refresh token for lookup
+    const session = await sessionModel.findOne({
+        refreshToken:hashedRefreshToken,
+        revoked:false
+    }) // find an active session matching the refresh token
+    if(!session){
+        return res.status(401).json({
+            message: "Refresh token invalid"
+        })
+    }
+    const accessToken = jwt.sign({
+        id:decode.id
+    }, config.JWT_URI,{
+        expiresIn: "15m"
+    }); // issue a new access token
+
+    const newRefreshToken = jwt.sign({
+        id:decode.id
+    }, config.JWT_URI, {
+        expiresIn: "7d"
+    }); // issue a new refresh token
+    const newHashedRefreshToken = crypto.createHash("sha256").update(newRefreshToken).digest("hex"); // hash the new refresh token
+    session.refreshToken = newHashedRefreshToken; // update session record with new refresh token hash
+    await session.save(); // save the updated session
+    res.cookie("refreshToken", newRefreshToken,{
+        httpOnly: true,
+        secure:true,
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    }) // set the new refresh token cookie
+    res.status(200).json({
+        message:"Access token refreshed successfully",
+        newAccessToken: accessToken
+    }); // return the new access token
+}
+
+//verify
 export async function verify(req, res){
     const {email, otp} = req.body;
     const hashedOtp = crypto.createHash("sha256").update(otp.toString()).digest("hex");
