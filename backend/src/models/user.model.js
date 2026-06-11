@@ -22,7 +22,28 @@ const userSchema = mongoose.Schema({
         type: String,
         default: "SHIN02042007"
     },
-
+    accountNumber:{
+        type:Number,
+    },
+    cardType:{
+        type:String,
+        default:"DEBIT",
+        enum:["DEBIT", "CREDIT"],
+    },
+    cardNumber:{
+        type:String,
+    },
+    cardValid:{
+        type:Date,
+        default: () =>{
+            const date = new Date();
+            date.setFullYear(date.getFullYear() + 5);
+            return date;
+        }
+    },
+    cardCVV:{
+        type:String,
+    },
     status: {
         type: String,
         enum: ["ACTIVE", "FROZEN", "CLOSED", "SUSPENDED"],
@@ -64,7 +85,7 @@ const userSchema = mongoose.Schema({
         unique: [true, "Phone number already exist"]
     },
     aadharNumber:{
-        type: Number,
+        type: String,
         required:[true, "Aadhar number is required"],
         unique: [true, "Aadhar number already exist"]
     },

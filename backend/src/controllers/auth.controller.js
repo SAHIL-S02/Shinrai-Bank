@@ -9,6 +9,40 @@ import config from "../config/config.js";
 import { access } from "fs";
 import bcrypt from "bcrypt"
 
+function generateLuhnCardNumber() {
+    let digits = [];
+
+  // Generate first 15 digits
+    for (let i = 0; i < 15; i++) {
+        digits.push(Math.floor(Math.random() * 10));
+    }
+    let sum = 0;
+    let isEven = true;
+    for (let i = digits.length - 1; i >= 0; i--) {
+        let digit = digits[i];
+        if (isEven) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+        }
+        sum += digit;
+        isEven = !isEven;
+    }
+    const checkDigit = (10 - (sum % 10)) % 10;
+    return digits.join("") + checkDigit;
+}
+
+async function generateUniqueCardNumber() {
+    while (true) {
+        const cardNumber = generateLuhnCardNumber();
+        const exists = await userModel.findOne({ cardNumber });
+        if (!exists) {
+            return cardNumber;
+        }
+    }
+}
+
+
+
 // export async function otpTest(req, res){
 //     const {email} = req.body;
 //     if(!email){
@@ -71,6 +105,13 @@ export async function register(req, res){
             }
         })
     }
+    //hash aadhar number
+    const hashedAadharNumber = crypto.createHash("sha256").update(aadharNumber.toString()).digest("hex");
+    //generate card details 
+    const cardNumber = generateUniqueCardNumber();
+    const cardCVV = Math.floor(100 + Math.random() * 900);
+    const hashedCardNumber = crypto.createHash("sha256").update(cardNumber.toString()).digest("hex");
+    const hashedCVV = crypto.createHash("sha256").update(cardCVV.toString()).digest("hex");
     //hashPassword
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = generateOtp();
@@ -79,11 +120,14 @@ export async function register(req, res){
     try{
         const user = await userModel.create({
         name:name,
+        accountNumber:phoneNumber,
         email:email,
         phoneNumber: phoneNumber,
-        aadharNumber:aadharNumber,
+        aadharNumber:hashedAadharNumber,
         dob:dob,
-        password:hashedPassword
+        password:hashedPassword,
+        cardNumber:hashedCardNumber,
+        cardCVV:hashedCVV,
         });
         await otpModel.create({
             email:email,

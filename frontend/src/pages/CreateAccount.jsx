@@ -107,7 +107,17 @@ export const CreateAccount = () => {
             <input
               name="phoneNumber"
               placeholder="+91 96473 97722"
-              onChange={handleChange}
+              maxLength={10}
+              value={form.phoneNumber}
+              onChange={(e) => {
+                const value = e.target.value
+                  .replace(/\D/g, "") // only digits
+                  .slice(0, 10);      // max 10 digits
+                setForm({
+                  ...form,
+                  phoneNumber: value,
+                });
+              }}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
             />
           </div>
