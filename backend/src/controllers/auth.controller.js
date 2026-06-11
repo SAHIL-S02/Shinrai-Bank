@@ -213,7 +213,6 @@ export async function refreshToken(req,res){ // refresh access token using a val
         newAccessToken: accessToken
     }); // return the new access token
 }
-
 //verify
 export async function verify(req, res){
     const {email, otp} = req.body;
@@ -247,7 +246,7 @@ export async function verify(req, res){
     })
 }
 //get-data
-export async function getData(req, res){
+export async function getDashboardData(req, res){
     try{
         const accessToken = req.headers.authorization?.split(" ")[1];
         if(!accessToken){
@@ -281,7 +280,7 @@ export async function getData(req, res){
         })
     }catch(e){
         return res.status(401).json({
-            success:true,
+            success:false,
             message:"Invalid token"
         })
     }

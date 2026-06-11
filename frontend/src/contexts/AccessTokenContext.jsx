@@ -8,7 +8,7 @@ const AccessTokenContext = ({children}) => {
     useEffect(() => {
     const refresh = async () => {
         try {
-            const res = await axios.post(
+            const res = await axios.get(
             `${config.BACKEND_PORT}/refresh-token`,
             {},
             { withCredentials: true }

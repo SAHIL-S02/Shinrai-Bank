@@ -12,7 +12,6 @@ export const Login = () => {
     const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     };
-
     const handleSubmit = async (e) => {
     e.preventDefault();
     try{
@@ -21,7 +20,7 @@ export const Login = () => {
         alert(`Welcome`);
     }catch(err){
         alert(`${err.response.data.message}`);
-    }
+    };
 
     };
     return (
