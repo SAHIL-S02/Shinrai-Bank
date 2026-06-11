@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import { loginUser } from "@/services/api";
 import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+    const  navigate = useNavigate();
     const {setAccessToken} = useContext(AccessTokenContextInfo);
     const [form, setForm] = useState({
     email: "",
@@ -18,6 +20,7 @@ export const Login = () => {
         const response = await loginUser(form);
         setAccessToken(response.data.accessToken);
         alert(`Welcome`);
+        navigate("/dashboard")
     }catch(err){
         alert(`${err.response.data.message}`);
     };
