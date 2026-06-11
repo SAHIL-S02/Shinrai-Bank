@@ -1,19 +1,14 @@
 import mongoose from "mongoose";
 
 const transactionSchema = mongoose.Schema({
-    user:{
+    user1:{
         type: mongoose.Schema.ObjectId,
         required:true,
-        ref:'user'
+        ref:'user1'
     },
     amount:{
         type:Number,
         required:true
-    },
-    transactionType:{
-        type:String,
-        required:true,
-        enum:["DEBIT", "CREDIT"]
     },
     user2:{
         type:mongoose.Schema.ObjectId,

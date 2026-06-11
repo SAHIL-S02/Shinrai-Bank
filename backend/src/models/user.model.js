@@ -49,16 +49,34 @@ const userSchema = mongoose.Schema({
         enum: ["ACTIVE", "FROZEN", "CLOSED", "SUSPENDED"],
         default: "ACTIVE",
     },
-
+    bankBalance:{
+        type:Number,
+        default:10000
+    },
     dailyTransferLimit: {
         type: Number,
         default: 100000,
+    },
+    dailyTransferredAmount: {
+        type: Number,
+        default: 0,
     },
     monthlyTransferLimit: {
         type: Number,
         default: 1000000,
     },
-
+    monthlyTransferredAmount: {
+        type: Number,
+        default: 0,
+    },
+    lastDailyReset: {
+        type: Date,
+        default: Date.now
+    },
+    lastMonthlyReset: {
+        type: Date,
+        default: Date.now
+    },
     kycVerified: {
         type: Boolean,
         default: false,

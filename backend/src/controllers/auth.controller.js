@@ -8,6 +8,8 @@ import sessionModel from "../models/session.model.js";
 import config from "../config/config.js";
 import { access } from "fs";
 import bcrypt from "bcrypt"
+import transactionModel from "../models/transaction.model.js";
+
 
 function generateLuhnCardNumber() {
     let digits = [];
@@ -327,5 +329,163 @@ export async function getDashboardData(req, res){
             success:false,
             message:"Invalid token"
         })
+    }
+}
+//send-money
+export async function sendMoney(req, res){
+    const session = await mongoose.startSession();
+    try{
+        const accessToken = req.headers.authorization?.split(" ")[1];
+        const {reciverPhoneNumber, reciverAccountNumber, amount} = req.body;
+        const transferAmount = Number(amount);
+
+        if (isNaN(transferAmount) || transferAmount <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid amount"
+            });
+        }
+        if(!transferAmount){
+            return res.status(400).json({
+                success:false,
+                message:"Amount not given"
+            })
+        }
+        
+        if (!reciverAccountNumber && !reciverPhoneNumber){
+            return res.status(400).json({
+                success:false,
+                message:"Reciver data not given"
+            })
+        }
+        if(!accessToken){
+            return res.status(401).json({
+                success: false,
+                message: "Access token is required"
+            });
+        }
+        const decode = jwt.verify(accessToken, config.JWT_URI);
+        
+        const user = await userModel.findById(decode.id);
+        if(!user){
+            return res.status(401).json({
+                success:false,
+                message:"Invalid token"
+            })
+        }
+        if(!user.verified){
+            return res.status(403).json({
+                success:false,
+                message:"User not verified"
+            });
+        }
+        if (reciverAccountNumber === user.accountNumber || reciverPhoneNumber === user.phoneNumber) {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot transfer money to your own account"
+            });
+        }
+        const now = new Date();
+
+        // Daily reset
+        if (
+            now.getDate() !== user.lastDailyReset.getDate() ||
+            now.getMonth() !== user.lastDailyReset.getMonth() ||
+            now.getFullYear() !== user.lastDailyReset.getFullYear()
+        ) {
+            user.dailyTransferredAmount = 0;
+            user.lastDailyReset = now;
+        }
+
+        // Monthly reset
+        if (
+            now.getMonth() !== user.lastMonthlyReset.getMonth() ||
+            now.getFullYear() !== user.lastMonthlyReset.getFullYear()
+        ) {
+            user.monthlyTransferredAmount = 0;
+            user.lastMonthlyReset = now;
+        }
+        if(user.dailyTransferLimit  - (user.dailyTransferredAmount + transferAmount) < 0){
+            return res.status(409).json({
+                success:false,
+                message:"Daily Transfer limit reached"
+            });
+        }
+        if(user.monthlyTransferLimit  - (user.monthlyTransferredAmount + transferAmount) < 0){
+            return res.status(409).json({
+                success:false,
+                message:"Monthly Transfer limit reached"
+            });
+        }
+        if(user.bankBalance < transferAmount){
+            return res.status(409).json({
+                success:false,
+                message:"Low balance"
+            });
+        }
+        await session.startTransaction();
+        if(reciverAccountNumber){
+            const reciver = await userModel.findOne({accountNumber:reciverAccountNumber}).session(session);
+            if(!reciver){
+                return res.status(404).json({
+                    success:false,
+                    message:"Reciver not found"
+                })
+            }
+            user.bankBalance -= transferAmount;
+            reciver.bankBalance += transferAmount;
+            user.dailyTransferredAmount += Number(transferAmount);
+            user.monthlyTransferredAmount += Number(transferAmount);
+            const debit = await transactionModel.create([{
+                user1:user._id,
+                amount:transferAmount,
+                user2:reciver._id,
+            }], {session});
+            await user.save({ session });
+            await reciver.save({ session });
+
+            await session.commitTransaction();
+            return res.status(200).json({
+                success:true,
+                message:`Amount ${amount} transferred to ${reciver.name}`
+            });
+        }
+        if(reciverPhoneNumber){
+            const reciver = await userModel.findOne({phoneNumber:reciverPhoneNumber}).session(session);
+            if(!reciver){
+                return res.status(404).json({
+                    success:false,
+                    message:"Reciver not found"
+                })
+            }
+            user.bankBalance -= transferAmount;
+            reciver.bankBalance += transferAmount;
+            user.dailyTransferredAmount += Number(transferAmount);
+            user.monthlyTransferredAmount += Number(transferAmount);
+            const debit = await transactionModel.create({
+                user1:user._id,
+                amount:transferAmount,
+                user2:reciver._id,
+            })
+            await user.save({ session });
+            await reciver.save({ session });
+
+            await session.commitTransaction();
+            return res.status(200).json({
+                success:true,
+                message:`Amount ${amount} transferred to ${reciver.name}`
+            });
+        }
+    }catch(e){
+        await session.abortTransaction();
+
+        console.error(e);
+
+        return res.status(500).json({
+            success: false,
+            message: e.message
+        });
+    }finally {
+        session.endSession();
     }
 }
