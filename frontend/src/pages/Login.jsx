@@ -1,53 +1,30 @@
-import { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useContext, useState } from "react";
 import { loginUser } from "@/services/api";
+import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-    const [captcha, setCaptcha] = useState(null);
-    const [verified, setVerified] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-    const handleCaptcha = (token) => {
-        setCaptcha(token);
-        setVerified(true); // TEMP: assume valid
-    };
+    const  navigate = useNavigate();
+    const {setAccessToken} = useContext(AccessTokenContextInfo);
     const [form, setForm] = useState({
-    mobile: "",
+    email: "",
     accountType: "",
     password:"",
     });
     const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     };
-
     const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!verified) {
-        alert("Please complete CAPTCHA");
-        return;
-    }
-    console.log("Form submitted with token:", captcha);
-    console.log(form);
-    setLoading(true);
+    try{
+        const response = await loginUser(form);
+        setAccessToken(response.data.accessToken);
+        alert(`Welcome`);
+        navigate("/dashboard")
+    }catch(err){
+        alert(`${err.response.data.message}`);
+    };
 
-    try {
-        const data = {
-            mobile: form.mobile,
-            password: form.password
-        };
-        const token = await loginUser(data);
-        
-        // Save the JWT token
-        localStorage.setItem("token", token);
-        alert("Login Successful!");
-        
-        // Optionally redirect the user or update application state
-        // window.location.href = "/dashboard";
-    } catch (error) {
-        alert("Login Failed: " + error.message);
-    } finally {
-        setLoading(false);
-    }
     };
     return (
     <section className="min-h-screen relative flex items-center justify-center p-4 bg-zinc-950 overflow-hidden text-zinc-100">
@@ -69,13 +46,13 @@ export const Login = () => {
                 </p>
             </div>
             <div className="flex flex-col md:flex-col gap-1 justify-center items-center">
-                {/* Mobile */}
+                {/* email */}
                 <div className="space-y-2 w-full md:w-1/2 lg:w-1.5/2 p-1 md:p-2">
                     <label className="text-sm font-medium text-zinc-300">Mobile Number</label>
                     <input
-                        type="tel"
-                        name="mobile"
-                        placeholder="+91 96473 97722"
+                        type="email"
+                        name="email"
+                        placeholder="sksahilu735@gmail.com"
                         onChange={handleChange}
                         className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
                     />
@@ -108,8 +85,7 @@ export const Login = () => {
                         className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
                     />
                 </div>
-                {/* ReCAPTCHA */}
-                <ReCAPTCHA className="" sitekey={`${RECAPTCHA_SITE_KEY}`} onChange={handleCaptcha}/>
+                
             </div >
             {/* Submit Button */}
             <div className="mt-10 flex flex-col items-center justify-center">

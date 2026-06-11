@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { registerUser } from "@/services/api";
 import { useNavigate } from "react-router-dom";
+import { UserTempContextInfo } from "@/contexts/UserTempContext";
 
 export const CreateAccount = () => {
+  const {userTemp, setUserTemp} = useContext(UserTempContextInfo);
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     aadharNumber: "",
     address: "",
-    mobile: "",
+    phoneNumber: "",
     email: "",
     accountType: "",
-    balance: "",
+    dob: "",
     nickname: "",
     password: "",
   });
@@ -24,13 +26,28 @@ export const CreateAccount = () => {
     e.preventDefault();
     try {
       const response = await registerUser(form);
-      alert(response);
-      if (response === "User registered successfully!") {
-        navigate("/login");
+      if(response.data.success){
+        setUserTemp({
+          name:form.name,
+          email:form.email,
+          phoneNumber:form.phoneNumber
+        })
+        navigate("/otp");
       }
+      
     } catch (err) {
-      alert("Registration failed. Please try again.");
-      console.error(err);
+      if(err.response?.status == 404){
+        alert(err.response.data.message);
+        return;
+      }
+      else if(err.response?.status == 400){
+        alert(err.response.data.message);
+        return;
+      }else{
+        alert("Registration failed. Please try again.");
+        return;
+      }
+      
     }
   };
 
@@ -86,11 +103,21 @@ export const CreateAccount = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-zinc-300">Mobile Number</label>
+            <label className="text-sm font-medium text-zinc-300">phoneNumber Number</label>
             <input
-              name="mobile"
+              name="phoneNumber"
               placeholder="+91 96473 97722"
-              onChange={handleChange}
+              maxLength={10}
+              value={form.phoneNumber}
+              onChange={(e) => {
+                const value = e.target.value
+                  .replace(/\D/g, "") // only digits
+                  .slice(0, 10);      // max 10 digits
+                setForm({
+                  ...form,
+                  phoneNumber: value,
+                });
+              }}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
             />
           </div>
@@ -136,15 +163,15 @@ export const CreateAccount = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-zinc-300">Initial Deposit</label>
+            <label className="text-sm font-medium text-zinc-300">Date of Birth</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <span className="text-zinc-500">₹</span>
+                <span className="text-zinc-500"></span>
               </div>
               <input
-                type="number"
-                name="balance"
-                placeholder="5000"
+                type="date"
+                name="dob"
+                placeholder="01-01-2000"
                 onChange={handleChange}
                 className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl pl-8 pr-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
               />

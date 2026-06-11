@@ -7,6 +7,11 @@ authRouter.post("/register", authController.register);
 authRouter.post("/verify", authController.verify);
 //login
 authRouter.post("/login", authController.login);
+//get refresh token
+authRouter.get("/refresh-token", authController.refreshToken); // route to refresh the access token
 //get data
-authRouter.get("/get-data", authController.getData);
+authRouter.get("/get-data", authController.getDashboardData);
+//send money
+authRouter.post("/send-money", authController.sendMoney);
+
 export default authRouter;
