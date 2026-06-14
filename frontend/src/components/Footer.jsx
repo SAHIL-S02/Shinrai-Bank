@@ -77,7 +77,7 @@ const Footer = () => {
             </div>
         </div>
         <hr className="mt-6 mb-3 border-gray-200" />
-        <p className="text-sm text-center text-gray-600">© Copyright 2021, All Rights Reserved by Postcraft</p>
+        <p className="text-sm text-center text-gray-600">Copyright (c) 2026 SK SAHIL UDDIN</p>
     </div>
 </section>
     )
