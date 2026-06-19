@@ -1,63 +1,89 @@
 import config from '../config/config.js';
 
+import {EmailClient} from '@azure/communication-email';
 
 import nodemailer from 'nodemailer';
+const client = new EmailClient(config.AZURE_COMMUNICATION_CONNECTION_STRING);
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-    type: 'OAuth2',
-    user: config.GOOGLE_EMAIL_USER,
-    clientId: config.GOOGLE_CLIENT_ID,
-    clientSecret: config.GOOGLE_CLIENT_SECRET,
-    refreshToken: config.GOOGLE_REFRESH_TOKEN,
-    },
-});
-
-// Verify the connection configuration
-transporter.verify((error, success) => {
-    if (error) {
-        console.error('Email server connection failed:');
-        if (error.code === 'EAUTH') {
-            console.error("   OAuth2 Authentication Error");
-            console.error("   Possible causes:");
-            console.error("   - Invalid or expired GOOGLE_REFRESH_TOKEN");
-            console.error("   - Incorrect GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET");
-            console.error("   - The email account has revoked access");
-        } else {
-            console.error(`   Error: ${error.message}`);
-        }
-    } else {
-        console.log('Email server is ready to send messages');
-    }
-});
-    
-
-
-// Function to send email
-const sendEmail = async (to, subject, text, html) => {
+const sendEmail = async (to, subject, html)=>{
     try {
-        const info = await transporter.sendMail({
-            from: `"SK SAHIL UDDIN" <${config.GOOGLE_EMAIL_USER}>`,
-            to,
-            subject,
-            text,
-            html,
-        });
-
-        console.log('Message sent: %s', info.messageId);
-        return info;
+        const message = {
+            senderAddress: config.EMAIL_SENDER,
+            content: {
+                subject,
+                html,
+            },
+            recipients: {
+                to: [{ address: to }],
+            },
+        };
+        const poller = await client.beginSend(message);
+        const result = await poller.pollUntilDone();
+        return result;
     } catch (error) {
-        console.error('Error sending email:', error.message);
+        console.error(error);
         throw error;
     }
-};
-
+}
 
 export default sendEmail;
 
 
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//     type: 'OAuth2',
+//     user: config.GOOGLE_EMAIL_USER,
+//     clientId: config.GOOGLE_CLIENT_ID,
+//     clientSecret: config.GOOGLE_CLIENT_SECRET,
+//     refreshToken: config.GOOGLE_REFRESH_TOKEN,
+//     },
+// });
+
+// // Verify the connection configuration
+// transporter.verify((error, success) => {
+//     if (error) {
+//         console.error('Email server connection failed:');
+//         if (error.code === 'EAUTH') {
+//             console.error("   OAuth2 Authentication Error");
+//             console.error("   Possible causes:");
+//             console.error("   - Invalid or expired GOOGLE_REFRESH_TOKEN");
+//             console.error("   - Incorrect GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET");
+//             console.error("   - The email account has revoked access");
+//         } else {
+//             console.error(`   Error: ${error.message}`);
+//         }
+//     } else {
+//         console.log('Email server is ready to send messages');
+//     }
+// });
+    
+
+
+// // Function to send email
+// const sendEmail = async (to, subject, text, html) => {
+//     try {
+//         const info = await transporter.sendMail({
+//             from: `"SK SAHIL UDDIN" <${config.GOOGLE_EMAIL_USER}>`,
+//             to,
+//             subject,
+//             text,
+//             html,
+//         });
+
+//         console.log('Message sent: %s', info.messageId);
+//         return info;
+//     } catch (error) {
+//         console.error('Error sending email:', error.message);
+//         throw error;
+//     }
+// };
+
+
+// export default sendEmail;
 
 
 
-export { transporter };
+
+
+// export { transporter };

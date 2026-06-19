@@ -9,7 +9,7 @@ import config from "../config/config.js";
 import { access } from "fs";
 import bcrypt from "bcrypt"
 import transactionModel from "../models/transaction.model.js";
-
+import mongoose from "mongoose";
 
 function generateLuhnCardNumber() {
     let digits = [];
@@ -136,7 +136,7 @@ export async function register(req, res){
             user:user._id,
             otp:hashedOtp
         });
-        await sendEmail(email, "Your OTP Code", `Your OTP code is ${otp}`, html);
+        await sendEmail(email, "Your OTP Code", html);
         res.status(201).json({
             success:true,
             message:"User is registered",

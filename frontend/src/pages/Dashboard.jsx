@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import SideBar from '@/components/SideBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {QRCode} from "react-qr-code";
 import {faHouseSignal, faSatelliteDish, faFireBurner, faCreditCard, faLightbulb, faMobile, faShare, faTurnUp, faTurnDown, faPaperPlane, faAddressBook, faBuildingColumns, faWallet } from '@fortawesome/free-solid-svg-icons'
+import { UserDataContextInfo } from '@/contexts/UserDataContext';
+
 const Dashboard = () => {
+  const {userData} = useContext(UserDataContextInfo);
   console.log("QRCode =", QRCode);
   return (
     <div className=''>
@@ -15,17 +18,17 @@ const Dashboard = () => {
                   Overview
                 </h1>
                 <h3 className='ml-3'>
-                  Welcome back, SK SAHIL 
+                  Welcome back, {userData.nickName != ""? userData.nickName:userData.name} 
                 </h3>
               </div>
               <div className='cardsAndOffers flex-1 flex justify-around pr-3 flex-wrap'>
                 <div className='debitCard md:w-1/4 md:h-[200px] m-2 shadow-2xl bg-gradient-to-b from-[#F2757B] to-[#90A4FC] rounded-2xl p-3 pl-5 pr-5 text-white'>
                   <div className='flex justify-between'>
                     <div>
-                      <p className='text-sm'>Card Number</p>
-                      <p className='ml-2 font-bold'>6789 5577 3445 6789</p>
+                      <p className='text-sm'>{userData.cardType.charAt(0) + userData.cardType.slice(1).toLowerCase()} Card Number</p>
+                      <p className='ml-2 font-bold'>{userData.cardNumber}</p>
                       <br />
-                      <p className='ml-2 font-bold'>SK SAHIL UDDIN</p>
+                      <p className='ml-2 font-bold'>{userData.name}</p>
                     </div>
                     <div className='w-1/6 flex flex-col justify-between'>
                       <img  src="/icons/card.png" alt="" />
@@ -38,7 +41,10 @@ const Dashboard = () => {
                         Valid Thru
                       </p>
                       <p className='font-bold'>
-                        09/29
+                        {new Date(userData.cardValid).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          year: "2-digit",
+                        })}
                       </p>
                     </div>
                     <div>
@@ -46,7 +52,7 @@ const Dashboard = () => {
                         CVV
                       </p>
                       <p  className='font-bold'>
-                        994
+                        {userData.cardCVV}
                       </p>
                     </div>
                   </div>
@@ -165,12 +171,12 @@ const Dashboard = () => {
                 <div className='userDetails col-span-4 row-span-4 bg-white rounded-2xl p-6 shadow-2xl flex justify-between'>
                   <div className='flex flex-col'>
                     <h2 className='font-bold text-gray-800 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]'>
-                      SK SAHIL UDDIN
+                      {userData.name}
                     </h2>
                     <p className='text-sm ml-3 mt-1'>+91 96473 97722</p>
                     <p className='text-sm ml-3 mt-1'>Account Number: 9647397722</p>
                     <p className='text-sm ml-3 mt-1'>
-                      UPI ID: 9647397722@shinrai
+                      UPI ID: {userData.phoneNumber}@shinrai
                     </p>
                     <hr />
                   </div>
