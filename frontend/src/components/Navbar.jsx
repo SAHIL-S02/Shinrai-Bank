@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-
+import { useContext } from "react";
+import { UserDataContextInfo } from "@/contexts/UserDataContext";
 export function NavbarDemo() {
+  const {isLogedIn, userData} = useContext(UserDataContextInfo);
+  console.log("isLogedIn =", isLogedIn);
   const navItems = [
     {
       name: "Home",
@@ -42,10 +45,23 @@ export function NavbarDemo() {
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
-          <div className="relative z-20 flex items-center gap-4">
+          <div className={`relative z-20 flex items-center gap-4 ${isLogedIn? `hidden`:``}`}>
             <NavLink to="/login"><NavbarButton as="button" variant="secondary">Login</NavbarButton></NavLink>
             
             <NavLink to="/create-account"><NavbarButton as="button" variant="primary">Create Account</NavbarButton></NavLink>
+          </div>
+          <div className={`relative z-20 flex items-center gap-4 ${isLogedIn ? `` : `hidden`}`}>
+            <NavLink to="/userProfile">
+              <NavbarButton
+                as="button"
+                variant="primary"
+                className={
+                  "rounded-full text-center p-1 w-7 h-7 text-lg flex justify-center items-center "
+                }
+              >
+                {userData?.name?.[0] ?? "U"}
+              </NavbarButton>
+            </NavLink>
           </div>
         </NavBody>
 
@@ -68,7 +84,7 @@ export function NavbarDemo() {
                 <span className="block">{item.name}</span>
               </NavLink>
             ))}
-            <div className="flex w-full flex-col gap-4">
+            <div className={`flex w-full flex-col gap-4 ${isLogedIn? `hidden`:``}`}>
               <NavLink to="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
                 <NavbarButton
                   as="button"

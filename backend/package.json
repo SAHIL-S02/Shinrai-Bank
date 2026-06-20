@@ -13,11 +13,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^30.0.0",
-    "supertest": "^7.1.0",
-    "@jest/globals": "^30.0.0"
+    "@jest/globals": "^27.5.1",
+    "jest": "^25.0.0",
+    "supertest": "^7.1.0"
   },
   "dependencies": {
+    "@azure/communication-email": "^1.1.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -26,7 +27,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.3",
     "morgan": "^1.10.1",
-    "nodemailer": "^8.0.10",
+    "nodemailer": "^9.0.1",
     "nodemon": "^3.1.14"
   }
 }

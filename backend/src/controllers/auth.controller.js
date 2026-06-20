@@ -9,58 +9,11 @@ import config from "../config/config.js";
 import { access } from "fs";
 import bcrypt from "bcrypt"
 import transactionModel from "../models/transaction.model.js";
-
-
-function generateLuhnCardNumber() {
-    let digits = [];
-
-  // Generate first 15 digits
-    for (let i = 0; i < 15; i++) {
-        digits.push(Math.floor(Math.random() * 10));
-    }
-    let sum = 0;
-    let isEven = true;
-    for (let i = digits.length - 1; i >= 0; i--) {
-        let digit = digits[i];
-        if (isEven) {
-        digit *= 2;
-        if (digit > 9) digit -= 9;
-        }
-        sum += digit;
-        isEven = !isEven;
-    }
-    const checkDigit = (10 - (sum % 10)) % 10;
-    return digits.join("") + checkDigit;
-}
-
-async function generateUniqueCardNumber() {
-    while (true) {
-        const cardNumber = generateLuhnCardNumber();
-        const exists = await userModel.findOne({ cardNumber });
-        if (!exists) {
-            return cardNumber;
-        }
-    }
-}
+import mongoose from "mongoose";
+import generateUniqueCardNumber from "../utils/card.util.js";
 
 
 
-// export async function otpTest(req, res){
-//     const {email} = req.body;
-//     if(!email){
-//         return res.status(400).json({
-//             success: false,
-//             message: "Email is required"
-//         })
-//     }
-//     const otp = generateOtp();
-//     const html = htmlOtp(otp);
-//     await sendEmail(email, "Your OTP Code", `Your OTP code is ${otp}`, html);
-//     return res.status(200).json({
-//         success: true,
-//         message: "OTP sent successfully"
-//     });
-// }
 //register
 export async function register(req, res){
     if(!req.body){
@@ -95,6 +48,7 @@ export async function register(req, res){
             message: "Password is required"
         })
     }
+    console.time("user find");
     const ifUser = await userModel.findOne({$or:[{email}, {aadharNumber}]});
     if(ifUser){
         return res.status(409).json({
@@ -107,36 +61,42 @@ export async function register(req, res){
             }
         })
     }
+    console.timeEnd("user find");
+
     //hash aadhar number
-    const hashedAadharNumber = crypto.createHash("sha256").update(aadharNumber.toString()).digest("hex");
+    //const hashedAadharNumber = crypto.createHash("sha256").update(aadharNumber.toString()).digest("hex");
     //generate card details 
-    const cardNumber = generateUniqueCardNumber();
+    const cardNumber = await generateUniqueCardNumber();
     const cardCVV = Math.floor(100 + Math.random() * 900);
-    const hashedCardNumber = crypto.createHash("sha256").update(cardNumber.toString()).digest("hex");
-    const hashedCVV = crypto.createHash("sha256").update(cardCVV.toString()).digest("hex");
+    //const hashedCardNumber = crypto.createHash("sha256").update(cardNumber.toString()).digest("hex");
+    //const hashedCVV = crypto.createHash("sha256").update(cardCVV.toString()).digest("hex");
     //hashPassword
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = generateOtp();
     const html = htmlOtp(otp);
     const hashedOtp = crypto.createHash("sha256").update(otp.toString()).digest("hex");
     try{
+        console.time("user create")
         const user = await userModel.create({
         name:name,
-        accountNumber:phoneNumber,
+        accountNumber:phoneNumber.toString(),
         email:email,
-        phoneNumber: phoneNumber,
-        aadharNumber:hashedAadharNumber,
+        phoneNumber: phoneNumber.toString(),
+        aadharNumber:aadharNumber.toString(),
         dob:dob,
         password:hashedPassword,
-        cardNumber:hashedCardNumber,
-        cardCVV:hashedCVV,
+        cardNumber:cardNumber.toString(),
+        cardCVV:cardCVV,
         });
+        console.timeEnd("user create")
+        console.time("otp create")
         await otpModel.create({
             email:email,
             user:user._id,
             otp:hashedOtp
         });
-        await sendEmail(email, "Your OTP Code", `Your OTP code is ${otp}`, html);
+        console.timeEnd("otp create")
+        
         res.status(201).json({
             success:true,
             message:"User is registered",
@@ -146,6 +106,9 @@ export async function register(req, res){
                 phoneNumber:phoneNumber
             }
         });
+        console.time("email send")
+        await sendEmail(email, "Your OTP Code", html);
+        console.timeEnd("email send")
     }catch(error){
         console.error(error);
         return res.status(400).json({
@@ -316,12 +279,27 @@ export async function getDashboardData(req, res){
                 message:"User not verified"
             });
         }
+        const transactions = await transactionModel.find({
+            $or:[
+                {user1:user._id},
+                {user2:user._id}
+            ]
+        }).sort({createdAt:-1}).limit(3);
         return res.status(200).json({
             success:true,
             message:"User data found",
             user:{
+                userId:user._id,
                 name:user.name,
-                email:user.email
+                email:user.email,
+                phoneNumber:user.phoneNumber,
+                cardType:user.cardType,
+                cardNumber:user.cardNumber,
+                cardValid:user.cardValid,
+                cardCVV:user.cardCVV,
+                verified:user.verified,
+                accountNumber:user.accountNumber,
+                transactions:transactions,
             }
         })
     }catch(e){
@@ -338,7 +316,9 @@ export async function sendMoney(req, res){
         const accessToken = req.headers.authorization?.split(" ")[1];
         const {reciverPhoneNumber, reciverAccountNumber, amount} = req.body;
         const transferAmount = Number(amount);
-
+        console.log("Request body:", req.body);
+        console.log("Phone:", reciverPhoneNumber);
+        console.log("Account:", reciverAccountNumber);
         if (isNaN(transferAmount) || transferAmount <= 0) {
             return res.status(400).json({
                 success: false,
@@ -366,7 +346,7 @@ export async function sendMoney(req, res){
         }
         const decode = jwt.verify(accessToken, config.JWT_URI);
         
-        const user = await userModel.findById(decode.id);
+        const user = await userModel.findById(decode.id).session(session);
         if(!user){
             return res.status(401).json({
                 success:false,
@@ -379,7 +359,10 @@ export async function sendMoney(req, res){
                 message:"User not verified"
             });
         }
-        if (reciverAccountNumber === user.accountNumber || reciverPhoneNumber === user.phoneNumber) {
+        if ((reciverAccountNumber &&
+        reciverAccountNumber.toString() === user.accountNumber) ||
+    (reciverPhoneNumber &&
+        reciverPhoneNumber.toString() === user.phoneNumber)) {
             return res.status(400).json({
                 success: false,
                 message: "Cannot transfer money to your own account"
@@ -423,10 +406,11 @@ export async function sendMoney(req, res){
                 message:"Low balance"
             });
         }
-        await session.startTransaction();
+        session.startTransaction();
         if(reciverAccountNumber){
-            const reciver = await userModel.findOne({accountNumber:reciverAccountNumber}).session(session);
+            const reciver = await userModel.findOne({accountNumber:reciverAccountNumber.toString()}).session(session);
             if(!reciver){
+                await session.abortTransaction();
                 return res.status(404).json({
                     success:false,
                     message:"Reciver not found"
@@ -438,8 +422,10 @@ export async function sendMoney(req, res){
             user.monthlyTransferredAmount += Number(transferAmount);
             const debit = await transactionModel.create([{
                 user1:user._id,
+                user1Name:user.name,
                 amount:transferAmount,
                 user2:reciver._id,
+                user2Name:reciver.name,
             }], {session});
             await user.save({ session });
             await reciver.save({ session });
@@ -451,8 +437,9 @@ export async function sendMoney(req, res){
             });
         }
         if(reciverPhoneNumber){
-            const reciver = await userModel.findOne({phoneNumber:reciverPhoneNumber}).session(session);
+            const reciver = await userModel.findOne({phoneNumber:reciverPhoneNumber.toString()}).session(session);
             if(!reciver){
+                await session.abortTransaction();
                 return res.status(404).json({
                     success:false,
                     message:"Reciver not found"
@@ -462,14 +449,15 @@ export async function sendMoney(req, res){
             reciver.bankBalance += transferAmount;
             user.dailyTransferredAmount += Number(transferAmount);
             user.monthlyTransferredAmount += Number(transferAmount);
-            const debit = await transactionModel.create({
+            const debit = await transactionModel.create([{
                 user1:user._id,
+                user1Name:user.name,
                 amount:transferAmount,
                 user2:reciver._id,
-            })
+                user2Name:reciver.name,
+            }], {session});
             await user.save({ session });
             await reciver.save({ session });
-
             await session.commitTransaction();
             return res.status(200).json({
                 success:true,
@@ -477,10 +465,10 @@ export async function sendMoney(req, res){
             });
         }
     }catch(e){
-        await session.abortTransaction();
-
+        if (session.inTransaction()) {
+            await session.abortTransaction();
+        }
         console.error(e);
-
         return res.status(500).json({
             success: false,
             message: e.message

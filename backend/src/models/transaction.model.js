@@ -6,6 +6,10 @@ const transactionSchema = mongoose.Schema({
         required:true,
         ref:'user1'
     },
+    user1Name:{
+        type:String,
+        required:true
+    },
     amount:{
         type:Number,
         required:true
@@ -14,6 +18,10 @@ const transactionSchema = mongoose.Schema({
         type:mongoose.Schema.ObjectId,
         required:true,
         ref:'user2',
+    },
+    user2Name:{
+        type:String,
+        required:true
     },
 },{
     timestamps:true

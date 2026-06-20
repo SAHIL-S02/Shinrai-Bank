@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
         default: "SHIN02042007"
     },
     accountNumber:{
-        type:Number,
+        type:String,
     },
     cardType:{
         type:String,
@@ -42,7 +42,7 @@ const userSchema = mongoose.Schema({
         }
     },
     cardCVV:{
-        type:String,
+        type:Number,
     },
     status: {
         type: String,
@@ -98,7 +98,7 @@ const userSchema = mongoose.Schema({
         unique: [true, "Email already exist"]
     },
     phoneNumber:{
-        type:Number,
+        type:String,
         required:[true, "Phone number is required"],
         unique: [true, "Phone number already exist"]
     },
