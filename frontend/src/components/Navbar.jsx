@@ -50,8 +50,18 @@ export function NavbarDemo() {
             
             <NavLink to="/create-account"><NavbarButton as="button" variant="primary">Create Account</NavbarButton></NavLink>
           </div>
-          <div className={`relative z-20 flex items-center gap-4 ${isLogedIn? ``:`hidden`}`}>
-            <NavLink to="/userProfile"><NavbarButton as="button" variant="primary" className={"rounded-full text-center p-1 w-7 h-7 text-lg flex justify-center items-center "}>{userData.name[0]}</NavbarButton></NavLink>
+          <div className={`relative z-20 flex items-center gap-4 ${isLogedIn ? `` : `hidden`}`}>
+            <NavLink to="/userProfile">
+              <NavbarButton
+                as="button"
+                variant="primary"
+                className={
+                  "rounded-full text-center p-1 w-7 h-7 text-lg flex justify-center items-center "
+                }
+              >
+                {userData?.name?.[0] ?? "U"}
+              </NavbarButton>
+            </NavLink>
           </div>
         </NavBody>
 
