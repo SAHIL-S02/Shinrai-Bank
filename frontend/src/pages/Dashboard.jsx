@@ -25,9 +25,13 @@ import { useNavigate } from 'react-router-dom';
       }
       fetchData();
     }, [accessToken]);
-    if(!isLogedIn){
-      navigate("/login");
-    }
+
+    useEffect(() => {
+      if (!isLogedIn) {
+        navigate("/login");
+      }
+    }, [isLogedIn, navigate]);
+
     console.log("Local data", userData);
     return (
       <div className=''>
