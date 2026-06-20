@@ -22,7 +22,7 @@ const UserDataContext = ({children}) => {
         status:"",
         bankBalance:0,
         kycVerified:false,
-
+        transactions:[],
     })
     return (
         <UserDataContextInfo.Provider value={{userData, setUserData}}>
