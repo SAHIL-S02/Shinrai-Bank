@@ -2,10 +2,11 @@ import { useContext, useState } from "react";
 import { loginUser } from "@/services/api";
 import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
 import { useNavigate } from "react-router-dom";
-
+import { UserDataContextInfo } from "@/contexts/UserDataContext";
 export const Login = () => {
     const  navigate = useNavigate();
     const {setAccessToken} = useContext(AccessTokenContextInfo);
+    const {setIsLogedIn} = useContext(UserDataContextInfo);
     const [form, setForm] = useState({
     email: "",
     accountType: "",
@@ -18,9 +19,13 @@ export const Login = () => {
     e.preventDefault();
     try{
         const response = await loginUser(form);
+        if(!response.data.success){
+            return response.data.message;
+        }
         setAccessToken(response.data.accessToken);
+        setIsLogedIn(true);
         alert(`Welcome`);
-        navigate("/dashboard")
+        navigate("/dashboard");
     }catch(err){
         alert(`${err.response.data.message}`);
     };

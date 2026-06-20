@@ -7,9 +7,11 @@
   import axios from 'axios';
   import { getDashboardData } from '@/services/api';
   import { AccessTokenContextInfo } from '@/contexts/AccessTokenContext';
+import { useNavigate } from 'react-router-dom';
   
   const Dashboard = () => {
-    const {userData, setUserData} = useContext(UserDataContextInfo);
+    const {userData, setUserData, isLogedIn} = useContext(UserDataContextInfo);
+    const navigate = useNavigate();
     console.log("QRCode =", QRCode);
     const {accessToken} = useContext(AccessTokenContextInfo);
     useEffect(()=>{
@@ -23,6 +25,10 @@
       }
       fetchData();
     }, [accessToken]);
+    if(!isLogedIn){
+      navigate("/login");
+    }
+    console.log("Local data", userData);
     return (
       <div className=''>
           <section className='lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex' >
@@ -33,7 +39,7 @@
                     Overview
                   </h1>
                   <h3 className='ml-3'>
-                    Welcome back, {userData.nickName != ""? userData.nickName:userData.name} 
+                    Welcome back, {userData?.nickName || userData?.name}
                   </h3>
                 </div>
                 <div className='cardsAndOffers flex-1 flex justify-around pr-3 flex-wrap'>
@@ -92,54 +98,53 @@
                     <h4 className='font-semibold mb-3'>
                       Transactions
                     </h4>
-                    <div className='ml-3 flex justify-between mb-3'>
-                      <div className='flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full'>
-                        <FontAwesomeIcon icon={faTurnUp} className="text-red-500" />
+                    {userData?.transactions?.map((transaction) => (
+                      <div key={transaction._id} className="ml-3 flex justify-between mb-3">
+                        <div className="flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full">
+                          {transaction.user1 === userData.userId ? (
+                            <FontAwesomeIcon icon={faTurnUp} className="text-red-500" />
+                          ) : (
+                            <FontAwesomeIcon icon={faTurnDown} className="text-green-500" />
+                          )}
+                        </div>
+
+                        <div>
+                          <p className="text-xs font-bold">
+                            {transaction.user1 === userData.userId
+                              ? transaction.user2Name
+                              : transaction.user1Name}
+                          </p>
+
+                          <p className="text-xs font-normal">
+                            {new Date(transaction.createdAt)
+                              .toLocaleString("en-GB", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              })
+                              .replace(/\//g, ".")
+                              .replace(",", "")}
+                          </p>
+                        </div>
+
+                        <div
+                          className={
+                            transaction.user1 === userData.userId
+                              ? "text-red-600"
+                              : "text-green-600"
+                          }
+                        >
+                          {transaction.user1 === userData.userId
+                            ? `-₹${transaction.amount}`
+                            : `+₹${transaction.amount}`}
+                        </div>
                       </div>
-                      <div className=''>
-                        <p className='text-xs font-bold'>
-                          Starbucks Howrah
-                        </p>
-                        <p className='text-xs font-normal'>
-                          19.04.2026 12:34
-                        </p>
-                      </div>
-                      <div className='text-red-600'>
-                        -₹690
-                      </div>
-                    </div>
-                    <div className='ml-3 flex justify-between mb-3'>
-                      <div className='flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full'>
-                        <FontAwesomeIcon icon={faTurnUp} className="text-red-500" />
-                      </div>
-                      <div className=''>
-                        <p className='text-xs font-bold'>
-                          Wallmart Kolkata
-                        </p>
-                        <p className='text-xs font-normal'>
-                          18.04.2026 10:28
-                        </p>
-                      </div>
-                      <div className='text-red-600'>
-                        -₹690
-                      </div>
-                    </div>
-                    <div className='ml-3 flex justify-between'>
-                      <div className='flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full'>
-                        <FontAwesomeIcon icon={faTurnDown} className="text-green-500" />
-                      </div>
-                      <div className=''>
-                        <p className='text-xs font-bold'>
-                          Salary Office Kolkata
-                        </p>
-                        <p className='text-xs font-normal'>
-                          01.04.2026 01:23
-                        </p>
-                      </div>
-                      <div className='text-green-600'>
-                        +₹80,000
-                      </div>
-                    </div>
+                    ))}
+                    
+                    
                   </div>
                   <div className='transfer col-span-3 row-span-4 bg-white rounded-2xl p-4 shadow-2xl'>
                     <div className='flex items-center mb-5'>

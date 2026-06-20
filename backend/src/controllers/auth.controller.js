@@ -279,10 +279,17 @@ export async function getDashboardData(req, res){
                 message:"User not verified"
             });
         }
+        const transactions = await transactionModel.find({
+            $or:[
+                {user1:user._id},
+                {user2:user._id}
+            ]
+        }).sort({createdAt:-1}).limit(3);
         return res.status(200).json({
             success:true,
             message:"User data found",
             user:{
+                userId:user._id,
                 name:user.name,
                 email:user.email,
                 phoneNumber:user.phoneNumber,
@@ -292,6 +299,7 @@ export async function getDashboardData(req, res){
                 cardCVV:user.cardCVV,
                 verified:user.verified,
                 accountNumber:user.accountNumber,
+                transactions:transactions,
             }
         })
     }catch(e){
@@ -308,7 +316,9 @@ export async function sendMoney(req, res){
         const accessToken = req.headers.authorization?.split(" ")[1];
         const {reciverPhoneNumber, reciverAccountNumber, amount} = req.body;
         const transferAmount = Number(amount);
-
+        console.log("Request body:", req.body);
+        console.log("Phone:", reciverPhoneNumber);
+        console.log("Account:", reciverAccountNumber);
         if (isNaN(transferAmount) || transferAmount <= 0) {
             return res.status(400).json({
                 success: false,
@@ -336,7 +346,7 @@ export async function sendMoney(req, res){
         }
         const decode = jwt.verify(accessToken, config.JWT_URI);
         
-        const user = await userModel.findById(decode.id);
+        const user = await userModel.findById(decode.id).session(session);
         if(!user){
             return res.status(401).json({
                 success:false,
@@ -349,7 +359,10 @@ export async function sendMoney(req, res){
                 message:"User not verified"
             });
         }
-        if (reciverAccountNumber === user.accountNumber || reciverPhoneNumber === user.phoneNumber) {
+        if ((reciverAccountNumber &&
+        reciverAccountNumber.toString() === user.accountNumber) ||
+    (reciverPhoneNumber &&
+        reciverPhoneNumber.toString() === user.phoneNumber)) {
             return res.status(400).json({
                 success: false,
                 message: "Cannot transfer money to your own account"
@@ -393,10 +406,11 @@ export async function sendMoney(req, res){
                 message:"Low balance"
             });
         }
-        await session.startTransaction();
+        session.startTransaction();
         if(reciverAccountNumber){
-            const reciver = await userModel.findOne({accountNumber:reciverAccountNumber}).session(session);
+            const reciver = await userModel.findOne({accountNumber:reciverAccountNumber.toString()}).session(session);
             if(!reciver){
+                await session.abortTransaction();
                 return res.status(404).json({
                     success:false,
                     message:"Reciver not found"
@@ -408,8 +422,10 @@ export async function sendMoney(req, res){
             user.monthlyTransferredAmount += Number(transferAmount);
             const debit = await transactionModel.create([{
                 user1:user._id,
+                user1Name:user.name,
                 amount:transferAmount,
                 user2:reciver._id,
+                user2Name:reciver.name,
             }], {session});
             await user.save({ session });
             await reciver.save({ session });
@@ -421,8 +437,9 @@ export async function sendMoney(req, res){
             });
         }
         if(reciverPhoneNumber){
-            const reciver = await userModel.findOne({phoneNumber:reciverPhoneNumber}).session(session);
+            const reciver = await userModel.findOne({phoneNumber:reciverPhoneNumber.toString()}).session(session);
             if(!reciver){
+                await session.abortTransaction();
                 return res.status(404).json({
                     success:false,
                     message:"Reciver not found"
@@ -432,14 +449,15 @@ export async function sendMoney(req, res){
             reciver.bankBalance += transferAmount;
             user.dailyTransferredAmount += Number(transferAmount);
             user.monthlyTransferredAmount += Number(transferAmount);
-            const debit = await transactionModel.create({
+            const debit = await transactionModel.create([{
                 user1:user._id,
+                user1Name:user.name,
                 amount:transferAmount,
                 user2:reciver._id,
-            })
+                user2Name:reciver.name,
+            }], {session});
             await user.save({ session });
             await reciver.save({ session });
-
             await session.commitTransaction();
             return res.status(200).json({
                 success:true,
@@ -447,10 +465,10 @@ export async function sendMoney(req, res){
             });
         }
     }catch(e){
-        await session.abortTransaction();
-
+        if (session.inTransaction()) {
+            await session.abortTransaction();
+        }
         console.error(e);
-
         return res.status(500).json({
             success: false,
             message: e.message
