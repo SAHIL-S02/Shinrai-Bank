@@ -6,18 +6,20 @@ import SideBarContext from './contexts/SideBarContext';
 import UserTempContext from './contexts/UserTempContext';
 import AccessTokenContext from './contexts/AccessTokenContext';
 import UserDataContext from './contexts/UserDataContext';
-
+import TransferToContext from './contexts/TransferToContext';
 
 createRoot(document.getElementById('root')).render(
-  <UserDataContext>
-    <AccessTokenContext>
-      <UserTempContext>
-        <SideBarContext>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </SideBarContext>
-      </UserTempContext>
-    </AccessTokenContext>
-  </UserDataContext>,
+  <TransferToContext>
+    <UserDataContext>
+      <AccessTokenContext>
+        <UserTempContext>
+          <SideBarContext>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </SideBarContext>
+        </UserTempContext>
+      </AccessTokenContext>
+    </UserDataContext>
+  </TransferToContext>,
 )

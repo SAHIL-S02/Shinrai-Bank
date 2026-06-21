@@ -22,3 +22,16 @@ export const getDashboardData = async(accessToken) =>{
     const res = await axios.get(`${config.BACKEND_PORT}/get-dashboardData`, {headers:{Authorization: `Bearer ${accessToken}`}});
     return res;
 };
+export const sendMoney = async (accessToken, reciverPhoneNumber, amount) =>{
+    if(!accessToken){
+        return new Error("accessToken not found");
+    }
+    if(!reciverPhoneNumber){
+        return new Error("Recever not given ");
+    }
+    if(!amount){
+        return new Error("Amount not given");
+    }
+    const res = await axios.post(`${config.BACKEND_PORT}/send-money`,{reciverPhoneNumber, amount:amount}, {headers:{Authorization: `Bearer ${accessToken}`}});
+    return res;
+}

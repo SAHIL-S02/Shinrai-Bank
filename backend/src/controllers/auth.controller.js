@@ -314,7 +314,7 @@ export async function sendMoney(req, res){
     const session = await mongoose.startSession();
     try{
         const accessToken = req.headers.authorization?.split(" ")[1];
-        const {reciverPhoneNumber, reciverAccountNumber, amount} = req.body;
+        const {reciverPhoneNumber, reciverAccountNumber, amount, reciverUpiId} = req.body;
         const transferAmount = Number(amount);
         console.log("Request body:", req.body);
         console.log("Phone:", reciverPhoneNumber);
