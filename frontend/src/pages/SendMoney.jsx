@@ -32,6 +32,7 @@ const SendMoney = () => {
         alert(res.data.message);
         setReceiver("");
         setAmount("");
+        setPassword("");
         update();
     } catch (err) {
         alert(
