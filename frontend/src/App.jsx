@@ -17,6 +17,9 @@ import ContactServices from './pages/ContactServices'
 import ChequeServices from './pages/ChequeServices'
 import InternetBanking from './pages/InternetBanking'
 import OtpVerification from './pages/OtpVerification'
+import SendMoney from './pages/SendMoney'
+import Transactions from './pages/Transactions'
+
 function App() {
   const {sideBar, setSideBar} = useContext(SideBarContextInfo);
   const location = useLocation()
@@ -30,6 +33,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/send-money" element={<SendMoney/>}/>
+        <Route path="/transactions" element={<Transactions/>}/>
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/login" element={<Login />} />
         <Route path="/otp" element={<OtpVerification />} />

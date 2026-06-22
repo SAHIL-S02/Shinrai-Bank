@@ -7,10 +7,11 @@
   import axios from 'axios';
   import { getDashboardData } from '@/services/api';
   import { AccessTokenContextInfo } from '@/contexts/AccessTokenContext';
-import { useNavigate } from 'react-router-dom';
-  
+import { NavLink, useNavigate } from 'react-router-dom';
+import { TransferToContextInfo } from '@/contexts/TransferToContext';
   const Dashboard = () => {
     const {userData, setUserData, isLogedIn} = useContext(UserDataContextInfo);
+    const {setTransferTo} = useContext(TransferToContextInfo);
     const navigate = useNavigate();
     console.log("QRCode =", QRCode);
     const {accessToken} = useContext(AccessTokenContextInfo);
@@ -99,9 +100,9 @@ import { useNavigate } from 'react-router-dom';
                 </div>
                 <div className='transactionsAndTransfers grid grid-cols-10 grid-rows-10 gap-4 w-full h-[450px] mt-3'>
                   <div className='transactions col-span-3 row-span-5 bg-white rounded-2xl p-4 shadow-2xl'>
-                    <h4 className='font-semibold mb-3'>
+                    <NavLink to="/transactions"><h4 className='font-semibold mb-3'>
                       Transactions
-                    </h4>
+                    </h4></NavLink>
                     {userData?.transactions?.map((transaction) => (
                       <div key={transaction._id} className="ml-3 flex justify-between mb-3">
                         <div className="flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full">
@@ -148,7 +149,6 @@ import { useNavigate } from 'react-router-dom';
                       </div>
                     ))}
                     
-                    
                   </div>
                   <div className='transfer col-span-3 row-span-4 bg-white rounded-2xl p-4 shadow-2xl'>
                     <div className='flex items-center mb-5'>
@@ -158,7 +158,8 @@ import { useNavigate } from 'react-router-dom';
                     </h2>
                     </div>
                     <div className='flex justify-between'>
-                      <div className='flex flex-col justify-center flex-wrap items-center'>
+                      <NavLink to="/send-money" onClick={()=>{setTransferTo("PHONE-NUMBER")}}>
+                        <div className='flex flex-col justify-center flex-wrap items-center'>
                         <div>
                           <FontAwesomeIcon icon={faAddressBook} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
                         </div>
@@ -166,22 +167,28 @@ import { useNavigate } from 'react-router-dom';
                           Pay Number
                         </p>
                       </div>
-                      <div className='flex flex-col justify-center flex-wrap items-center'>
-                        <div>
-                          <FontAwesomeIcon icon={faBuildingColumns} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                      </NavLink>
+                      <NavLink to="/send-money" onClick={()=>{setTransferTo("ACCOUNT-NUMBER")}}>
+                        <div className='flex flex-col justify-center flex-wrap items-center'>
+                          <div>
+                            <FontAwesomeIcon icon={faBuildingColumns} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                          </div>
+                          <p className='text-xs text-center'>
+                            Pay to Bank
+                          </p>
                         </div>
-                        <p className='text-xs text-center'>
-                          Pay to Bank
-                        </p>
-                      </div>
-                      <div className='flex flex-col justify-center flex-wrap items-center'>
-                        <div className=''>
-                          <img src="/icons/upi.png" alt="" className='w-9 bg-[#F1F3F6] rounded-full p-1 mt-1 mb-1 shadow-md'/>
+                      </NavLink>
+                      <NavLink to="/send-money" onClick={()=>{setTransferTo("BANK-UPI")}}>
+                        <div className='flex flex-col justify-center flex-wrap items-center'>
+                          <div className=''>
+                            <img src="/icons/upi.png" alt="" className='w-9 bg-[#F1F3F6] rounded-full p-1 mt-1 mb-1 shadow-md'/>
+                          </div>
+                          <p className='text-xs text-center'>
+                            Pay to UPI
+                          </p>
                         </div>
-                        <p className='text-xs text-center'>
-                          Pay to UPI
-                        </p>
-                      </div>
+                      </NavLink>
+                      
                       <div className='flex flex-col justify-center flex-wrap items-center'>
                         <div>
                           <FontAwesomeIcon icon={faWallet} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>

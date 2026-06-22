@@ -13,5 +13,7 @@ authRouter.get("/refresh-token", authController.refreshToken); // route to refre
 authRouter.get("/get-dashboardData", authController.getDashboardData);
 //send money
 authRouter.post("/send-money", authController.sendMoney);
+//transactions
+authRouter.get("/transactions", authController.getTransactions);
 
 export default authRouter;
