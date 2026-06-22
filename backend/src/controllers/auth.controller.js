@@ -531,11 +531,11 @@ export async function getTransactions(req, res){
             currentPage: page,
             message:"All transactions found"
         })
-    }catch(e){
-        return res.status(400).json({
-            success:false,
-            message: e
-        })
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: e && e.message ? e.message : 'Internal server error',
+        });
     }
     
 
