@@ -7,19 +7,21 @@ import UserTempContext from './contexts/UserTempContext';
 import AccessTokenContext from './contexts/AccessTokenContext';
 import UserDataContext from './contexts/UserDataContext';
 import TransferToContext from './contexts/TransferToContext';
-
+import TransactionsContext from './contexts/TransactionsContext';
 createRoot(document.getElementById('root')).render(
-  <TransferToContext>
-    <UserDataContext>
-      <AccessTokenContext>
-        <UserTempContext>
-          <SideBarContext>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </SideBarContext>
-        </UserTempContext>
-      </AccessTokenContext>
-    </UserDataContext>
-  </TransferToContext>,
+  <TransactionsContext>
+    <TransferToContext>
+      <UserDataContext>
+        <AccessTokenContext>
+          <UserTempContext>
+            <SideBarContext>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </SideBarContext>
+          </UserTempContext>
+        </AccessTokenContext>
+      </UserDataContext>
+    </TransferToContext>
+  </TransactionsContext>,
 )

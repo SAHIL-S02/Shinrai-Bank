@@ -100,9 +100,9 @@ import { TransferToContextInfo } from '@/contexts/TransferToContext';
                 </div>
                 <div className='transactionsAndTransfers grid grid-cols-10 grid-rows-10 gap-4 w-full h-[450px] mt-3'>
                   <div className='transactions col-span-3 row-span-5 bg-white rounded-2xl p-4 shadow-2xl'>
-                    <h4 className='font-semibold mb-3'>
+                    <NavLink to="/transactions"><h4 className='font-semibold mb-3'>
                       Transactions
-                    </h4>
+                    </h4></NavLink>
                     {userData?.transactions?.map((transaction) => (
                       <div key={transaction._id} className="ml-3 flex justify-between mb-3">
                         <div className="flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full">
@@ -148,7 +148,6 @@ import { TransferToContextInfo } from '@/contexts/TransferToContext';
                         </div>
                       </div>
                     ))}
-                    
                     
                   </div>
                   <div className='transfer col-span-3 row-span-4 bg-white rounded-2xl p-4 shadow-2xl'>

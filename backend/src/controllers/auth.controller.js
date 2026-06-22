@@ -314,7 +314,8 @@ export async function sendMoney(req, res){
     const session = await mongoose.startSession();
     try{
         const accessToken = req.headers.authorization?.split(" ")[1];
-        const {reciverPhoneNumber, reciverAccountNumber, amount, reciverUpiId} = req.body;
+        const {reciverPhoneNumber, reciverAccountNumber, amount, password} = req.body;
+        
         const transferAmount = Number(amount);
         console.log("Request body:", req.body);
         console.log("Phone:", reciverPhoneNumber);
@@ -331,7 +332,12 @@ export async function sendMoney(req, res){
                 message:"Amount not given"
             })
         }
-        
+        if(!password){
+            return res.status(400).json({
+                success:false,
+                message:"Password not given"
+            });
+        }
         if (!reciverAccountNumber && !reciverPhoneNumber){
             return res.status(400).json({
                 success:false,
@@ -357,6 +363,13 @@ export async function sendMoney(req, res){
             return res.status(403).json({
                 success:false,
                 message:"User not verified"
+            });
+        }
+        const passwordStatus = await bcrypt.compare(password, user.password);
+        if(!passwordStatus){
+            return res.status(403).json({
+                success:false,
+                message:"Password incorrect"
             });
         }
         if ((reciverAccountNumber &&
@@ -476,4 +489,54 @@ export async function sendMoney(req, res){
     }finally {
         session.endSession();
     }
+}
+
+//get transactions
+export async function getTransactions(req, res){
+    try{
+        const accessToken = req.headers.authorization?.split(" ")[1];
+        const page = Number(req.query.page || 1);
+        const limit = Number(req.query.limit || 10);
+        
+        if(!accessToken){
+            return res.status(401).json({
+                success: false,
+                message: "Access token is required"
+            });
+        }
+        const decode = jwt.verify(accessToken, config.JWT_URI);
+        const user = await userModel.findById(decode.id);
+        if(!user){
+            return res.status(401).json({
+                success:false,
+                message:"Invalid token"
+            })
+        }
+        const transactions = await transactionModel.find({
+            $or:[
+                {user1:user._id},
+                {user2:user._id}
+            ]
+        }).sort({createdAt: -1}).skip((page-1)*limit).limit(limit);
+        const totalTransactions = await transactionModel.countDocuments({
+                $or:[
+                    {user1:user._id},
+                    {user2:user._id}
+                ]
+        });
+        return res.status(200).json({
+            success:true,
+            transactions: transactions,
+            totalPages: Math.ceil(totalTransactions / limit),
+            currentPage: page,
+            message:"All transactions found"
+        })
+    }catch(e){
+        return res.status(400).json({
+            success:false,
+            message: e
+        })
+    }
+    
+
 }

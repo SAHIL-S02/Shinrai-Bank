@@ -2,12 +2,19 @@ import React, { useContext, useState } from "react";
 import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
 import { sendMoney } from "@/services/api";
 import { TransferToContextInfo } from "@/contexts/TransferToContext";
+import { UserDataContextInfo } from "@/contexts/UserDataContext";
 const SendMoney = () => {
+  const {setUserData} = useContext(UserDataContextInfo);
     const {accessToken} = useContext(AccessTokenContextInfo);
     const {transferTo, setTransferTo} = useContext(TransferToContextInfo);
     const [receiver, setReceiver] = useState("");
     const [amount, setAmount] = useState("");
-
+    const [password, setPassword] = useState("");
+  const update = async()=>{
+    const res = await getDashboardData(accessToken);
+      setUserData(res.data.user);
+      console.log(res);
+  }
     const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -16,7 +23,7 @@ const SendMoney = () => {
         if (transferTo === "BANK-UPI") {
             target = receiver.split("@")[0];
         }
-        const res = await sendMoney(accessToken, target, Number(amount));
+        const res = await sendMoney(accessToken, target, Number(amount), password);
         console.log(res);
         if (!res.data.success) {
             alert(res.data.message);
@@ -25,6 +32,7 @@ const SendMoney = () => {
         alert(res.data.message);
         setReceiver("");
         setAmount("");
+        update();
     } catch (err) {
         alert(
         err.response?.data?.message ||
@@ -181,7 +189,21 @@ const SendMoney = () => {
                   required
                 />
               </div>
+              {/* Password */}
+              <div>
+                <label className="block text-sm font-medium text-zinc-600 mb-2">
+                  Password
+                </label>
 
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter Password"
+                  className="w-full bg-zinc-100 border border-zinc-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  required
+                />
+              </div>
               {/* Submit Button */}
               <button
                 type="submit"
