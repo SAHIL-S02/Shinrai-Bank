@@ -42,6 +42,16 @@ export const getTransactions = async(pageNo, accessToken) => {
     if(!pageNo){
         return new Error("Page No not found");
     }
-    const res = axios.get(`${config.BACKEND_PORT}/transactions?page=${pageNo}&limit=10`, {headers:{Authorization:`Bearer ${accessToken}`}});
+    const res = await axios.get(`${config.BACKEND_PORT}/transactions?page=${pageNo}&limit=10`, {headers:{Authorization:`Bearer ${accessToken}`}});
+    return res;
+}
+export const checkBalance = async(accessToken, password) =>{
+    if(!accessToken){
+        return new Error("accessToken not found");
+    }
+    if(!password){
+        return new Error("Password not found");
+    }
+    const res = await axios.post(`${config.BACKEND_PORT}/check-balance`, {password}, {headers:{Authorization:`Bearer ${accessToken}`}});
     return res;
 }

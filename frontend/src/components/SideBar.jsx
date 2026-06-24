@@ -24,7 +24,7 @@ const SideBar = () => {
                 <FontAwesomeIcon icon={faPenToSquare} className={`text-[#C55EDA]  ${(sideBar == "application" || sideBar == "account-management" || sideBar == "kyc-identity" || sideBar == "card-services" || sideBar == "loan-credit-services" || sideBar == "contact-update" || sideBar == "cheque-services" || sideBar == "internet-banking")? "text-2xl" : "text-xl"}`}></FontAwesomeIcon>
                 <p className='text-[9px] cursor-pointer'>Application</p>
             </div>
-            <div className={`historyIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "history"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("history"); navigate("/history")}}>
+            <div className={`historyIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "history"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("history"); navigate("/transactions")}}>
                 <FontAwesomeIcon icon={faClockRotateLeft} className={`text-[#C55EDA]  ${sideBar == "history"? "text-2xl" : "text-xl"}`}></FontAwesomeIcon>
                 <p className='text-[9px] cursor-pointer'>History</p>
             </div>

@@ -19,6 +19,7 @@ import InternetBanking from './pages/InternetBanking'
 import OtpVerification from './pages/OtpVerification'
 import SendMoney from './pages/SendMoney'
 import Transactions from './pages/Transactions'
+import CheckBalance from './pages/CheckBalance';
 
 function App() {
   const {sideBar, setSideBar} = useContext(SideBarContextInfo);
@@ -34,6 +35,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/send-money" element={<SendMoney/>}/>
+        <Route path="/check-balance" element={<CheckBalance/>}/>
         <Route path="/transactions" element={<Transactions/>}/>
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/login" element={<Login />} />

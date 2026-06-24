@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserDataContextInfo } from "@/contexts/UserDataContext";
 export const Login = () => {
     const  navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const {setAccessToken} = useContext(AccessTokenContextInfo);
     const {setIsLogedIn} = useContext(UserDataContextInfo);
     const [form, setForm] = useState({
@@ -18,6 +19,7 @@ export const Login = () => {
     const handleSubmit = async (e) => {
     e.preventDefault();
     try{
+        setLoading(true);
         const response = await loginUser(form);
         if(!response.data.success){
             return response.data.message;
@@ -27,8 +29,10 @@ export const Login = () => {
         alert(`Welcome`);
         navigate("/dashboard");
     }catch(err){
-        alert(`${err.response.data.message}`);
-    };
+        alert(`${err.message}`);
+    }finally{
+        setLoading(false);
+    }
 
     };
     return (
@@ -100,7 +104,14 @@ export const Login = () => {
                 >
                     <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></span>
                     <div className="relative bg-zinc-950/50 backdrop-blur-md px-6 py-4 rounded-xl flex items-center justify-center gap-2 group-hover:bg-zinc-950/30 transition-all duration-300">
-                        <span className="font-semibold text-white tracking-wide">Login</span>
+                        <span className="font-semibold text-white tracking-wide">{loading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <span>Checking...</span>
+                            </div>
+                            ) : (
+                            "Login"
+                            )}</span>
                         <svg className="w-5 h-5 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </div>
                 </button>

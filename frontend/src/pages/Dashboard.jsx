@@ -188,15 +188,17 @@ import { TransferToContextInfo } from '@/contexts/TransferToContext';
                           </p>
                         </div>
                       </NavLink>
-                      
-                      <div className='flex flex-col justify-center flex-wrap items-center'>
-                        <div>
-                          <FontAwesomeIcon icon={faWallet} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                      <NavLink to="/check-balance">
+                        <div className='flex flex-col justify-center flex-wrap items-center'>
+                          <div>
+                            <FontAwesomeIcon icon={faWallet} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                          </div>
+                          <p className='text-xs text-center'>
+                            Check Balance
+                          </p>
                         </div>
-                        <p className='text-xs text-center'>
-                          Check Balance
-                        </p>
-                      </div>
+                      </NavLink>
+                      
                     </div>
                   </div>
                   <div className='userDetails col-span-4 row-span-4 bg-white rounded-2xl p-6 shadow-2xl flex justify-between'>
