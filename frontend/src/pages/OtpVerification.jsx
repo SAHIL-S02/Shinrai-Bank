@@ -3,6 +3,7 @@ import { useState } from "react";
 import { UserTempContextInfo } from '@/contexts/UserTempContext';
 import { verifyUser } from '@/services/api';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const OtpVerification = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const OtpVerification = () => {
                 const response = await verifyUser(form);
                 if(response.data.success){
                     navigate("/login");
-                    alert("Verified");
+                    toast("Verified");
                 }
             }catch(err){
                 if(err.response?.status == 409){

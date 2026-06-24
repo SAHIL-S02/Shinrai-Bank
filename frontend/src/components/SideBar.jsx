@@ -6,10 +6,40 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPenToSquare, faClockRotateLeft, faPercent, faFileInvoice} from '@fortawesome/free-solid-svg-icons'
 import { faF } from '@fortawesome/free-solid-svg-icons/faF';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { UserDataContextInfo } from '@/contexts/UserDataContext';
 
 const SideBar = () => {
+    const {setIsLogedIn} = useContext(UserDataContextInfo);
+    const {setUserData} = useContext(UserDataContextInfo);
     const navigate = useNavigate();
     const {sideBar, setSideBar} = useContext(SideBarContextInfo);
+    const reset = ()=>{
+        navigate("/");
+        setIsLogedIn(false);
+        setUserData({
+        name:"",
+        nickName:"",
+        email:"",
+        aadharNumber:"",
+        userId:"",
+        phoneNumber:"",
+        address:"",
+        verified:false,
+        dob:null,
+        branchCode:"",
+        ifscCode:"",
+        accountNumber:"",
+        cardType:"",
+        cardNumber:"",
+        cardValid:null,
+        cardCVV:"",
+        status:"",
+        bankBalance:0,
+        kycVerified:true,
+        transactions:[],
+    })
+    
+    }
     useEffect(() => {
     // console.log(sideBar);
     }, [sideBar]);
@@ -24,7 +54,7 @@ const SideBar = () => {
                 <FontAwesomeIcon icon={faPenToSquare} className={`text-[#C55EDA]  ${(sideBar == "application" || sideBar == "account-management" || sideBar == "kyc-identity" || sideBar == "card-services" || sideBar == "loan-credit-services" || sideBar == "contact-update" || sideBar == "cheque-services" || sideBar == "internet-banking")? "text-2xl" : "text-xl"}`}></FontAwesomeIcon>
                 <p className='text-[9px] cursor-pointer'>Application</p>
             </div>
-            <div className={`historyIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "history"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("history"); navigate("/history")}}>
+            <div className={`historyIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "history"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("history"); navigate("/transactions")}}>
                 <FontAwesomeIcon icon={faClockRotateLeft} className={`text-[#C55EDA]  ${sideBar == "history"? "text-2xl" : "text-xl"}`}></FontAwesomeIcon>
                 <p className='text-[9px] cursor-pointer'>History</p>
             </div>
@@ -32,16 +62,12 @@ const SideBar = () => {
                 <FontAwesomeIcon icon={faPercent} className={`text-[#C55EDA]  ${(sideBar == "loan")? "text-2xl" : "text-xl"}`}></FontAwesomeIcon> 
                 <p className='text-[9px] cursor-pointer'>Loan</p>
             </div>
-            <div className={`investmentIconDiv cursor-pointer flex flex-col justify-center items-center drop-shadow-lg  mt-5 mb-5 ${sideBar == "investment"? "activeB" : "de-activeB"}`} onClick={() => {setSideBar("investment"); navigate("/investment")}}>
-                <FontAwesomeIcon icon={faFileInvoice} className={`text-[#C55EDA]  ${sideBar == "investment"? "text-2xl" : "text-xl"}`}></FontAwesomeIcon> 
-                <p className='text-[9px] cursor-pointer'>Statement</p>
-            </div>
         </div>
         <div className='lowerSide'>
-            <div className='settingIconDiv w-[1.7rem] mt-5 mb-5 activeB'>
+            <div className='settingIconDiv w-[1.7rem] mt-5 mb-5 activeB cursor-pointer' onClick={()=>{navigate("/settings")}}>
                 <img className='rounded-md' src="/icons/settings.png" alt="setting" />
             </div>
-            <div className='logoutIconDiv w-[1.7rem] mt-5 mb-5 activeB'>
+            <div className='logoutIconDiv w-[1.7rem] mt-5 mb-5 activeB cursor-pointer' onClick={()=>{reset()}}>
                 <img className='rounded-md' src="/icons/logout.png" alt="logout" />
             </div>
         </div>

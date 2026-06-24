@@ -51,7 +51,7 @@ export function NavbarDemo() {
             <NavLink to="/create-account"><NavbarButton as="button" variant="primary">Create Account</NavbarButton></NavLink>
           </div>
           <div className={`relative z-20 flex items-center gap-4 ${isLogedIn ? `` : `hidden`}`}>
-            <NavLink to="/userProfile">
+            <NavLink to="/user-profile">
               <NavbarButton
                 as="button"
                 variant="primary"

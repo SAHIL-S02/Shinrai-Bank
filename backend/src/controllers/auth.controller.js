@@ -300,6 +300,9 @@ export async function getDashboardData(req, res){
                 verified:user.verified,
                 accountNumber:user.accountNumber,
                 transactions:transactions,
+                accountType:user.accountType,
+                ifscCode:user.ifscCode,
+                branchCode:user.branchCode,
             }
         })
     }catch(e){
@@ -537,6 +540,50 @@ export async function getTransactions(req, res){
             message: e && e.message ? e.message : 'Internal server error',
         });
     }
-    
+}
 
+//check balance
+
+export async function checkBalance(req, res){
+    try{
+        const {password} = req.body;
+        const accessToken = req.headers.authorization?.split(" ")[1];
+        if(!accessToken){
+            return res.status(401).json({
+                success: false,
+                message: "Access token is required"
+            });
+        }
+        if(!password){
+            return res.status(400).json({
+                success:false,
+                message:"Password not given"
+            });
+        }
+        const decode = jwt.verify(accessToken, config.JWT_URI);
+        const user = await userModel.findById(decode.id);
+        if(!user){
+            return res.status(401).json({
+                success:false,
+                message:"User not found"
+            });
+        }
+        const passwordStatus = await bcrypt.compare(password, user.password);
+        if(!passwordStatus){
+            return res.status(403).json({
+                success:false,
+                message:"Password Incorrect"
+            });
+        }
+        return res.status(200).json({
+            success:true,
+            message:"Balance successfully fetched",
+            balance: user.bankBalance
+        })
+    }catch (e) {
+        return res.status(500).json({
+            success:false,
+            message: e.message,
+        })
+    }
 }

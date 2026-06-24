@@ -79,7 +79,7 @@ const userSchema = mongoose.Schema({
     },
     kycVerified: {
         type: Boolean,
-        default: false,
+        default: true,
     },
 
     interestRate: {

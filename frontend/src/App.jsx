@@ -19,6 +19,19 @@ import InternetBanking from './pages/InternetBanking'
 import OtpVerification from './pages/OtpVerification'
 import SendMoney from './pages/SendMoney'
 import Transactions from './pages/Transactions'
+import CheckBalance from './pages/CheckBalance';
+import Settings from './pages/Settings'
+import Loan from './pages/Loan'
+import Contact from './pages/Contact'
+import AboutUs from './pages/AboutUs'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Features from './pages/Features'
+import TermsAndConditions from './pages/TermsAndConditions'
+import UserProfile from './pages/UserProfile'
+import { Toaster } from 'react-hot-toast'
+
+
+
 
 function App() {
   const {sideBar, setSideBar} = useContext(SideBarContextInfo);
@@ -29,13 +42,28 @@ function App() {
 
   return (
     <>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 1000,
+        }}
+      />
       {!hideLayout && <NavbarDemo />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/send-money" element={<SendMoney/>}/>
+        <Route path="/check-balance" element={<CheckBalance/>}/>
         <Route path="/transactions" element={<Transactions/>}/>
         <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/settings" element={<Settings/>}/>
+        <Route path='/about-us' element={<AboutUs/>}/>
+        <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
+        <Route path='/features' element={<Features/>}/>
+        <Route path='/terms-and-conditions' element={<TermsAndConditions/>}/>
+        <Route path="/contact" element={<Contact/>}/>
+        <Route path="/loan" element={<Loan/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/otp" element={<OtpVerification />} />
         <Route path="/application" element={<Application/>}/>
