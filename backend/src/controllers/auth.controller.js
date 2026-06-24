@@ -300,6 +300,9 @@ export async function getDashboardData(req, res){
                 verified:user.verified,
                 accountNumber:user.accountNumber,
                 transactions:transactions,
+                accountType:user.accountType,
+                ifscCode:user.ifscCode,
+                branchCode:user.branchCode,
             }
         })
     }catch(e){

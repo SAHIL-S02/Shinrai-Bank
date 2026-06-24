@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
 import { registerUser } from "@/services/api";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { UserTempContextInfo } from "@/contexts/UserTempContext";
+import toast from "react-hot-toast";
+
 
 export const CreateAccount = () => {
-  const {userTemp, setUserTemp} = useContext(UserTempContextInfo);
+  const [loading, setLoading] = useState(false);
+  const {setUserTemp} = useContext(UserTempContextInfo);
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
@@ -25,6 +28,7 @@ export const CreateAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await registerUser(form);
       if(response.data.success){
         setUserTemp({
@@ -32,22 +36,18 @@ export const CreateAccount = () => {
           email:form.email,
           phoneNumber:form.phoneNumber
         })
+        toast.success("Account created")
         navigate("/otp");
       }
       
     } catch (err) {
-      if(err.response?.status == 404){
-        alert(err.response.data.message);
-        return;
-      }
-      else if(err.response?.status == 400){
-        alert(err.response.data.message);
-        return;
-      }else{
-        alert("Registration failed. Please try again.");
-        return;
-      }
-      
+      toast.error(
+        err.response?.data?.message ||
+        err.message ||
+        "Login Failed"
+      );
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -67,7 +67,7 @@ export const CreateAccount = () => {
             Open New Account
           </h2>
           <p className="text-zinc-400 mt-3 text-sm md:text-base">
-            Join Shinrai Bank and start your journey towards financial freedom.
+            Join <NavLink to="/" className={'text-cyan-500'}>Shinrai Bank</NavLink> and start your journey towards financial freedom.
           </p>
         </div>
 
@@ -77,6 +77,9 @@ export const CreateAccount = () => {
             <input
               name="name"
               placeholder="Sk Sahil Uddin"
+              required
+              value={form.name}
+              autoComplete="name"
               onChange={handleChange}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
             />
@@ -86,8 +89,20 @@ export const CreateAccount = () => {
             <label className="text-sm font-medium text-zinc-300">Aadhar Number</label>
             <input
               name="aadharNumber"
+              value={form.aadharNumber}
+              required
+              maxLength={12}
+              onChange={(e) => {
+                const value = e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 12);
+
+                setForm({
+                  ...form,
+                  aadharNumber: value,
+                });
+              }}
               placeholder="1234 5678 9012"
-              onChange={handleChange}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
             />
           </div>
@@ -96,6 +111,8 @@ export const CreateAccount = () => {
             <label className="text-sm font-medium text-zinc-300">Residential Address</label>
             <input
               name="address"
+              value={form.address}
+              required
               placeholder="123 Bank St, Financial District"
               onChange={handleChange}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
@@ -103,12 +120,15 @@ export const CreateAccount = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-zinc-300">phoneNumber Number</label>
+            <label className="text-sm font-medium text-zinc-300">Phone Number</label>
             <input
               name="phoneNumber"
+              value={form.phoneNumber}
+              required
               placeholder="+91 96473 97722"
               maxLength={10}
-              value={form.phoneNumber}
+              minLength={10}
+              autoComplete="tel"
               onChange={(e) => {
                 const value = e.target.value
                   .replace(/\D/g, "") // only digits
@@ -127,6 +147,9 @@ export const CreateAccount = () => {
             <input
               type="email"
               name="email"
+              value={form.email}
+              autoComplete="email"
+              required
               placeholder="sahil@example.com"
               onChange={handleChange}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
@@ -138,6 +161,9 @@ export const CreateAccount = () => {
             <input
               type="password"
               name="password"
+              value={form.password}
+              autoComplete="new-password"
+              required
               placeholder="••••••••"
               onChange={handleChange}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
@@ -149,6 +175,8 @@ export const CreateAccount = () => {
             <div className="relative">
               <select
                 name="accountType"
+                value={form.accountType}
+                required
                 onChange={handleChange}
                 className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
               >
@@ -171,6 +199,8 @@ export const CreateAccount = () => {
               <input
                 type="date"
                 name="dob"
+                value={form.dob}
+                required
                 placeholder="01-01-2000"
                 onChange={handleChange}
                 className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl pl-8 pr-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
@@ -183,6 +213,7 @@ export const CreateAccount = () => {
             <input
               name="nickname"
               placeholder="e.g. Dream Fund"
+              value={form.nickname}
               onChange={handleChange}
               className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
             />
@@ -192,14 +223,31 @@ export const CreateAccount = () => {
         <div className="mt-10">
           <button
             type="submit"
-            className="w-full relative group overflow-hidden rounded-xl p-[1px]"
-          >
+            disabled={loading}
+            className={`w-full relative group overflow-hidden rounded-xl p-[1px] ${loading ? "opacity-70 cursor-not-allowed" : ""}`}>
             <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></span>
             <div className="relative bg-zinc-950/50 backdrop-blur-md px-6 py-4 rounded-xl flex items-center justify-center gap-2 group-hover:bg-zinc-950/30 transition-all duration-300">
-              <span className="font-semibold text-white tracking-wide">Complete Registration</span>
-              <svg className="w-5 h-5 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Creating Account...</span>
+                </div>
+              ) : (
+                <span className="font-semibold text-white tracking-wide">
+                  Complete Registration
+                </span>
+              )}
             </div>
           </button>
+        </div>
+        <div className="mt-8 text-center text-zinc-400">
+          Already have an account?
+          <NavLink
+            to="/login"
+            className="ml-2 text-cyan-400 hover:text-cyan-300 font-medium"
+          >
+            Login
+          </NavLink>
         </div>
       </form>
     </section>

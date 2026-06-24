@@ -28,10 +28,10 @@ import { TransferToContextInfo } from '@/contexts/TransferToContext';
     }, [accessToken]);
 
     useEffect(() => {
-      if (!isLogedIn) {
+    if (!isLogedIn) {
         navigate("/login");
-      }
-    }, [isLogedIn, navigate]);
+    }
+}, [isLogedIn, navigate]);
 
     console.log("Local data", userData);
     return (

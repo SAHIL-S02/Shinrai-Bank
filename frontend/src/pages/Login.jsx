@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import { loginUser } from "@/services/api";
 import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { UserDataContextInfo } from "@/contexts/UserDataContext";
+import toast from "react-hot-toast";
+
 export const Login = () => {
     const  navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -19,6 +21,7 @@ export const Login = () => {
     const handleSubmit = async (e) => {
     e.preventDefault();
     try{
+        
         setLoading(true);
         const response = await loginUser(form);
         if(!response.data.success){
@@ -26,10 +29,14 @@ export const Login = () => {
         }
         setAccessToken(response.data.accessToken);
         setIsLogedIn(true);
-        alert(`Welcome`);
+        toast.success("Welcome Back!");
         navigate("/dashboard");
     }catch(err){
-        alert(`${err.message}`);
+        toast.error(
+            err.response?.data?.message ||
+            err.message ||
+            "Login Failed"
+            );
     }finally{
         setLoading(false);
     }
@@ -51,27 +58,31 @@ export const Login = () => {
                 Login To Account
                 </h2>
                 <p className="text-zinc-400 mt-3 text-sm md:text-base">
-                Join Shinrai Bank and start your journey towards financial freedom.
+                    Join <NavLink to="/" className={'text-cyan-500'}>Shinrai Bank</NavLink> and start your journey towards financial freedom.
                 </p>
             </div>
             <div className="flex flex-col md:flex-col gap-1 justify-center items-center">
                 {/* email */}
-                <div className="space-y-2 w-full md:w-1/2 lg:w-1.5/2 p-1 md:p-2">
-                    <label className="text-sm font-medium text-zinc-300">Mobile Number</label>
+                <div className="space-y-2 w-full md:w-1/2 lg:w-3/4 p-1 md:p-2">
+                    <label className="text-sm font-medium text-zinc-300">Email</label>
                     <input
                         type="email"
                         name="email"
+                        required
+                        value={form.email}
                         placeholder="sksahilu735@gmail.com"
                         onChange={handleChange}
                         className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
                     />
                 </div>
                 {/* Account Types */}
-                <div className="space-y-2 w-full md:w-1/2 lg:w-1.5/2 p-1 md:p-2">
+                <div className="space-y-2 w-full md:w-1/2 lg:w-3/4 p-1 md:p-2">
                     <label className="text-sm font-medium text-zinc-300">Account Type</label>
                     <div className="relative">
                         <select
                             name="accountType"
+                            value={form.accountType}
+                            required
                             onChange={handleChange}
                             className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
                         >
@@ -85,10 +96,12 @@ export const Login = () => {
                     </div>
                 </div>
                 {/* Password */}
-                <div className="space-y-2 w-full md:w-1/2 lg:w-1.5/2 p-1 md:p-2">
+                <div className="space-y-2 w-full md:w-1/2 lg:w-3/4 p-1 md:p-2">
                     <label className="text-sm font-medium text-zinc-300">Password</label>
                     <input type="password"
                         name="password"
+                        value={form.password}
+                        required
                         placeholder="Enter a Password"
                         onChange={handleChange}
                         className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300"
@@ -100,6 +113,7 @@ export const Login = () => {
             <div className="mt-10 flex flex-col items-center justify-center">
                 <button
                 type="submit"
+                disabled={loading}
                 className="w-1/2 md:w-1/2 lg:w-1/3 md:p-2 relative group overflow-hidden rounded-xl p-[1px]"
                 >
                     <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></span>
@@ -107,14 +121,20 @@ export const Login = () => {
                         <span className="font-semibold text-white tracking-wide">{loading ? (
                             <div className="flex items-center justify-center gap-2">
                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                <span>Checking...</span>
+                                <span>Logging In...</span>
                             </div>
                             ) : (
                             "Login"
                             )}</span>
-                        <svg className="w-5 h-5 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        
                     </div>
                 </button>
+            </div>
+            <div className="mt-10 flex items-center justify-center ">
+                If you don't have an account 
+            <NavLink to="/create-account">
+                <p className="ml-4 mr-4 text-cyan-600">Create Account</p>
+            </NavLink>
             </div>
         </form>
     </section>
