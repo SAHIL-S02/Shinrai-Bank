@@ -4,22 +4,22 @@ import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
 import { useContext} from "react";
 
 export const registerUser = async (data) => {
-    const res = await axios.post(`${config.BACKEND_PORT}/register`,data);
+    const res = await axios.post(`${config.BACKEND_PORT}/api/auth/register`,data);
     return res;
 };
 export const verifyUser = async (data) =>{
-    const res = await axios.post(`${config.BACKEND_PORT}/verify`, data);
+    const res = await axios.post(`${config.BACKEND_PORT}/api/auth/verify`, data);
     return res;
 }
 export const loginUser = async (data) => {
-    const res = await axios.post(`${config.BACKEND_PORT}/login`, data);
+    const res = await axios.post(`${config.BACKEND_PORT}/api/auth/login`, data);
     return res;
 };
 export const getDashboardData = async(accessToken) =>{
     if(!accessToken){
         return new Error("accessToken not found");
     }
-    const res = await axios.get(`${config.BACKEND_PORT}/get-dashboardData`, {headers:{Authorization: `Bearer ${accessToken}`}});
+    const res = await axios.get(`${config.BACKEND_PORT}/api/auth/get-dashboardData`, {headers:{Authorization: `Bearer ${accessToken}`}});
     return res;
 };
 export const sendMoney = async (accessToken, reciverPhoneNumber, amount, password) =>{
@@ -32,7 +32,7 @@ export const sendMoney = async (accessToken, reciverPhoneNumber, amount, passwor
     if(!amount){
         return new Error("Amount not given");
     }
-    const res = await axios.post(`${config.BACKEND_PORT}/send-money`,{reciverPhoneNumber, amount:amount, password}, {headers:{Authorization: `Bearer ${accessToken}`}});
+    const res = await axios.post(`${config.BACKEND_PORT}/api/auth/send-money`,{reciverPhoneNumber, amount:amount, password}, {headers:{Authorization: `Bearer ${accessToken}`}});
     return res;
 }
 export const getTransactions = async(pageNo, accessToken) => {
@@ -42,7 +42,7 @@ export const getTransactions = async(pageNo, accessToken) => {
     if(!pageNo){
         return new Error("Page No not found");
     }
-    const res = await axios.get(`${config.BACKEND_PORT}/transactions?page=${pageNo}&limit=10`, {headers:{Authorization:`Bearer ${accessToken}`}});
+    const res = await axios.get(`${config.BACKEND_PORT}/api/auth/transactions?page=${pageNo}&limit=10`, {headers:{Authorization:`Bearer ${accessToken}`}});
     return res;
 }
 export const checkBalance = async(accessToken, password) =>{
@@ -52,6 +52,6 @@ export const checkBalance = async(accessToken, password) =>{
     if(!password){
         return new Error("Password not found");
     }
-    const res = await axios.post(`${config.BACKEND_PORT}/check-balance`, {password}, {headers:{Authorization:`Bearer ${accessToken}`}});
+    const res = await axios.post(`${config.BACKEND_PORT}/api/auth/check-balance`, {password}, {headers:{Authorization:`Bearer ${accessToken}`}});
     return res;
 }
