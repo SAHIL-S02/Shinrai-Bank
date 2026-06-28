@@ -195,7 +195,7 @@ export const NavbarLogo = () => {
   return (
       <NavLink to="/" className="relative z-20 w-[11%] flex justify-around items-center">
         <img
-        src="https://assets.aceternity.com/logo-dark.png"
+        src="/icons/logo.png"
         alt="logo"
         className="w-8 h-fit"/>
         <h1 className="font-medium text-black dark:text-white">Shinrai Bank</h1>
