@@ -12,7 +12,7 @@ export const verifyUser = async (data) =>{
     return res;
 }
 export const loginUser = async (data) => {
-    const res = await axios.post(`${config.BACKEND_PORT}/api/auth/login`, data);
+    const res = await axios.post(`${config.BACKEND_PORT}/api/auth/login`, data, { withCredentials: true });
     return res;
 };
 export const getDashboardData = async(accessToken) =>{
