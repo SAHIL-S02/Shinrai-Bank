@@ -1,0 +1,35 @@
+npm run build -- inside the frontend directory
+
+sudo mkdir -p /var/www/frontend
+
+sudo nano /etc/nginx/sites-available/frontend
+
+
+
+
+sudo cp -r dist/* /var/www/frontend/
+
+sudo nano /etc/nginx/sites-available/frontend
+
+add this 
+server {
+    listen 80;
+    server_name app.yourdomain.com;
+
+    root /var/www/frontend;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+
+
+sudo ln -s /etc/nginx/sites-available/frontend /etc/nginx/sites-enabled/
+
+
+sudo nginx -t
+sudo systemctl restart nginx
+
+your localserver will start at http://localhost:80
