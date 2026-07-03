@@ -7,7 +7,7 @@ const app = express();
 app.use(morgan());
 app.use(express.json())
 app.use(cors({
-    origin: "https://shinraibank.slayers.space",
+    origin: "http://localhost:5173",
     credentials: true
 }))
 app.use(cookieParser())
