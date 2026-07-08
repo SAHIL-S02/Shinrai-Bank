@@ -15,7 +15,7 @@ jobs:
         with:
           host: ${{ secrets.BACKEND_HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.BACKEND_SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
             set -e
