@@ -13,7 +13,6 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1.2.0
         with:
-          with:
           host: ${{ secrets.BACKEND_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
