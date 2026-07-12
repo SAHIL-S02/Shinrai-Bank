@@ -13,7 +13,6 @@ app.use(express.json())
 const allowedOrigins = (config.FRONTEND_URL || "http://localhost:5173")
     .split(",")
     .map(origin => origin.trim());
-
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (mobile apps, curl, etc.)
@@ -21,9 +20,14 @@ app.use(cors({
         if (allowedOrigins.includes(origin)) {
             return callback(null, true);
         }
-        return callback(new Error("Not allowed by CORS"));
+
+        // Log and explicitly disable CORS for disallowed origins
+        console.warn(`CORS origin rejected: ${origin}`);
+        return callback(null, false);
     },
-    credentials: true
+    credentials: true,
+    // Use a safe status code for successful OPTIONS requests
+    optionsSuccessStatus: 204
 }))
 app.use(cookieParser())
 
