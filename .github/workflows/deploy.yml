@@ -1,0 +1,40 @@
+name: Deploy Shinrai Bank
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.BACKEND_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.BACKEND_SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            set -e
+
+            cd ~/Code/Shinrai-Bank
+
+            git fetch origin
+            git reset --hard origin/main
+
+            # Backend
+            cd backend
+            npm ci
+            pm2 restart Shinrai-Bank-backend --update-env
+
+            # Frontend
+            cd ../frontend
+            npm ci
+            npm run build
+
+            rsync -av --delete dist/ /var/www/frontend/
+
+            echo "Deployment completed successfully!"
