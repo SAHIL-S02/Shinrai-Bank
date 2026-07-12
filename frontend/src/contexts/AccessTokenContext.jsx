@@ -17,7 +17,9 @@ const AccessTokenContext = ({children}) => {
             { withCredentials: true }
             );
             setAccessToken(res.data.newAccessToken);
-            setIsLogedIn(true);
+            if(res.data.success){
+                setIsLogedIn(true);
+            }
         } catch (err) {
             console.log("Not logged in");
         } finally {
@@ -28,8 +30,8 @@ const AccessTokenContext = ({children}) => {
     refresh();
   }, []);
     return (
-        <AccessTokenContextInfo.Provider value={{accessToken, setAccessToken}}>
-            {!loading && children}
+        <AccessTokenContextInfo.Provider value={{accessToken, setAccessToken, loading}}>
+            {children}
         </AccessTokenContextInfo.Provider>
     )
 }

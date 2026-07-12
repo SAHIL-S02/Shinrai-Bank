@@ -55,8 +55,25 @@ server {
     root /var/www/frontend;
     index index.html;
 
+    # Enable Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 10240;
+    gzip_proxied any;
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/x-javascript application/xml application/json image/svg+xml;
+    gzip_disable "MSIE [1-6]\.";
+
+    # Cache Control for Static Assets (1 year)
+    location ~* \.(?:ico|css|js|gif|jpe?g|png|webp|woff2?|eot|ttf|svg)$ {
+        expires 1y;
+        add_header Cache-Control "public, no-transform";
+    }
+
+    # SPA Routing (No-cache for index.html to ensure users get the latest build)
     location / {
         try_files $uri $uri/ /index.html;
+        expires -1;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
     }
 }
 ```

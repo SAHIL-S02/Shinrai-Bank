@@ -1,6 +1,5 @@
 "use client";;
 import { cn } from "@/lib/utils";
-import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
   motion,
   AnimatePresence,
@@ -10,6 +9,23 @@ import {
 
 import React, { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+
+// Simple inline SVG icons — replaces @tabler/icons-react dependency
+const MenuIcon = ({ className, onClick }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className={className} onClick={onClick}>
+    <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
+const CloseIcon = ({ className, onClick }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className={className} onClick={onClick}>
+    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
 
 
 
@@ -185,9 +201,9 @@ export const MobileNavToggle = ({
   onClick
 }) => {
   return isOpen ? (
-    <IconX className="text-black dark:text-white" onClick={onClick} />
+    <CloseIcon className="text-black dark:text-white" onClick={onClick} />
   ) : (
-    <IconMenu2 className="text-black dark:text-white" onClick={onClick} />
+    <MenuIcon className="text-black dark:text-white" onClick={onClick} />
   );
 };
 
@@ -195,7 +211,7 @@ export const NavbarLogo = () => {
   return (
       <NavLink to="/" className="relative z-20 w-[11%] flex justify-around items-center">
         <img
-        src="/icons/logo.png"
+        src="/icons/logo.webp"
         alt="logo"
         className="w-8 h-fit"/>
         <h1 className="font-medium text-black dark:text-white">Shinrai Bank</h1>

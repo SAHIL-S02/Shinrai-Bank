@@ -93,7 +93,7 @@ import { TransferToContextInfo } from '@/contexts/TransferToContext';
                           </p>
                         </div>
                         <div className='w-[20%]'>
-                          <img src="/offer.png" alt="" />
+                          <img src="/offer.webp" alt="" />
                         </div>
                     </div>
                   </div>

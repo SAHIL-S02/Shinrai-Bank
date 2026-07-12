@@ -13,6 +13,7 @@ const config = {
     GOOGLE_EMAIL_USER: process.env.GOOGLE_EMAIL_USER,
     AZURE_COMMUNICATION_CONNECTION_STRING: process.env.AZURE_COMMUNICATION_CONNECTION_STRING,
     EMAIL_SENDER:process.env.EMAIL_SENDER,
+    FRONTEND_URL: process.env.FRONTEND_URL,
 };
 
 export default config;

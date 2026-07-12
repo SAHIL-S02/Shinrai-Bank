@@ -3,13 +3,34 @@ import morgan from "morgan"
 import authRouter from "./routes/auth.route.js";
 import cookieParser from "cookie-parser"
 import cors from 'cors'
+import config from "./config/config.js";
+
 const app = express();
 app.use(morgan());
 app.use(express.json())
+
+// Support multiple origins: comma-separated in FRONTEND_URL env var
+const allowedOrigins = (config.FRONTEND_URL || "http://localhost:5173")
+    .split(",")
+    .map(origin => origin.trim());
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, curl, etc.)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true
 }))
 app.use(cookieParser())
+
+// Health check — frontend can verify backend is alive
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "ok", timestamp: Date.now() });
+});
+
 app.use("/api/auth/", authRouter)
 export default app;
