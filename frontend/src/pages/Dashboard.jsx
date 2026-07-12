@@ -1,37 +1,61 @@
-  import React, { useContext, useEffect } from 'react'
-  import SideBar from '@/components/SideBar'
-  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-  import {QRCode} from "react-qr-code";
-  import {faHouseSignal, faSatelliteDish, faFireBurner, faCreditCard, faLightbulb, faMobile, faShare, faTurnUp, faTurnDown, faPaperPlane, faAddressBook, faBuildingColumns, faWallet } from '@fortawesome/free-solid-svg-icons'
-  import { UserDataContextInfo } from '@/contexts/UserDataContext';
-  import axios from 'axios';
-  import { getDashboardData } from '@/services/api';
-  import { AccessTokenContextInfo } from '@/contexts/AccessTokenContext';
+import React, { useContext, useEffect, useState } from 'react'
+import SideBar from '@/components/SideBar'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {QRCode} from "react-qr-code";
+import {faHouseSignal, faSatelliteDish, faFireBurner, faCreditCard, faLightbulb, faMobile, faShare, faTurnUp, faTurnDown, faPaperPlane, faAddressBook, faBuildingColumns, faWallet } from '@fortawesome/free-solid-svg-icons'
+import { UserDataContextInfo } from '@/contexts/UserDataContext';
+import axios from 'axios';
+import { getDashboardData } from '@/services/api';
+import { AccessTokenContextInfo } from '@/contexts/AccessTokenContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { TransferToContextInfo } from '@/contexts/TransferToContext';
-  const Dashboard = () => {
+
+const Dashboard = () => {
     const {userData, setUserData, isLogedIn} = useContext(UserDataContextInfo);
     const {setTransferTo} = useContext(TransferToContextInfo);
     const navigate = useNavigate();
     console.log("QRCode =", QRCode);
-    const {accessToken} = useContext(AccessTokenContextInfo);
-    useEffect(()=>{
+    const {accessToken, loading: tokenLoading} = useContext(AccessTokenContextInfo);
+    const [fetchingData, setFetchingData] = useState(true);
+
+    useEffect(() => {
+        if (!isLogedIn && !tokenLoading) {
+            navigate("/login");
+        }
+    }, [isLogedIn, tokenLoading, navigate]);
+
+    useEffect(() => {
       if(!accessToken){
         return;
       }
-      const fetchData = async()=>{
-        const res = await getDashboardData(accessToken);
-        setUserData(res.data.user);
-        console.log(res);
+      const fetchData = async () => {
+        try {
+          setFetchingData(true);
+          const res = await getDashboardData(accessToken);
+          setUserData(res.data.user);
+          console.log(res);
+        } catch (err) {
+          console.error("Failed to fetch dashboard data:", err);
+        } finally {
+          setFetchingData(false);
+        }
       }
       fetchData();
     }, [accessToken]);
 
-    useEffect(() => {
-    if (!isLogedIn) {
-        navigate("/login");
+    if (tokenLoading || fetchingData) {
+      return (
+        <div className=''>
+          <section className='lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex' >
+            <SideBar/>
+            <div className='mainDashboard w-full flex flex-col justify-center items-center m-9 bg-white rounded-2xl shadow-xl p-8 min-h-[450px]'>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7763EA] mb-4"></div>
+              <p className="text-gray-600 font-medium animate-pulse">Retrieving your secure bank dashboard...</p>
+            </div>
+          </section>
+        </div>
+      )
     }
-}, [isLogedIn, navigate]);
 
     console.log("Local data", userData);
     return (
