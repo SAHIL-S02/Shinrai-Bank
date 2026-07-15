@@ -6,6 +6,7 @@ import cors from 'cors'
 import config from "./config/config.js";
 
 const app = express();
+app.set("trust proxy", 1); // trust first proxy — required for secure cookies behind nginx/reverse proxy
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json())
 

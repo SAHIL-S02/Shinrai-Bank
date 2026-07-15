@@ -162,11 +162,10 @@ export async function login(req, res){
     },config.JWT_URI, {
         expiresIn:"15m"
     });
-    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("refreshToken", refreshToken,{
         httpOnly: true,
-        sameSite: isProduction ? "none" : "lax",
-        secure: isProduction,
+        sameSite: "none",
+        secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     })
     res.status(200).json({
@@ -212,14 +211,14 @@ export async function refreshToken(req,res){ // refresh access token using a val
     const newHashedRefreshToken = crypto.createHash("sha256").update(newRefreshToken).digest("hex"); // hash the new refresh token
     session.refreshToken = newHashedRefreshToken; // update session record with new refresh token hash
     await session.save(); // save the updated session
-    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("refreshToken", newRefreshToken,{
         httpOnly: true,
-        sameSite: isProduction ? "none" : "lax",
-        secure: isProduction,
+        sameSite: "none",
+        secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }) // set the new refresh token cookie
     res.status(200).json({
+        success: true,
         message:"Access token refreshed successfully",
         newAccessToken: accessToken
     }); // return the new access token
