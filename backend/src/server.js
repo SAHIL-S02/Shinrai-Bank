@@ -1,3 +1,8 @@
+import crypto from "crypto";
+if (typeof globalThis.crypto === "undefined") {
+    globalThis.crypto = crypto.webcrypto || crypto;
+}
+
 import express from "express";
 import app from "./app.js";
 import config from "./config/config.js";

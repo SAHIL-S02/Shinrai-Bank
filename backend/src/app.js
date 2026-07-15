@@ -6,7 +6,7 @@ import cors from 'cors'
 import config from "./config/config.js";
 
 const app = express();
-app.use(morgan());
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json())
 
 // Support multiple origins: comma-separated in FRONTEND_URL env var
