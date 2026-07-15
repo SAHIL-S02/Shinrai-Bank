@@ -3,6 +3,7 @@ import { loginUser } from "@/services/api";
 import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import { UserDataContextInfo } from "@/contexts/UserDataContext";
+import { setMemoryToken } from "@/services/axiosInstance";
 import toast from "react-hot-toast";
 
 export const Login = () => {
@@ -28,6 +29,7 @@ export const Login = () => {
             return response.data.message;
         }
         setAccessToken(response.data.accessToken);
+        setMemoryToken(response.data.accessToken);
         setIsLogedIn(true);
         toast.success("Welcome Back!");
         navigate("/dashboard");

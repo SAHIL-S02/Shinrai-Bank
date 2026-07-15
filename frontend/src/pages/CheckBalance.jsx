@@ -11,7 +11,7 @@ const CheckBalance = () => {
       e.preventDefault();
       try{
         setLoading(true);
-        const res = await checkBalance(accessToken, password);
+        const res = await checkBalance(password);
         console.log(res);
         setAfter(true);
         setBalance(res.data.balance);

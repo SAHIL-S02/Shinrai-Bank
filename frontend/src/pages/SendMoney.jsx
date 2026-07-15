@@ -1,17 +1,15 @@
 import React, { useContext, useState } from "react";
-import { AccessTokenContextInfo } from "@/contexts/AccessTokenContext";
-import { sendMoney } from "@/services/api";
+import { sendMoney, getDashboardData } from "@/services/api";
 import { TransferToContextInfo } from "@/contexts/TransferToContext";
 import { UserDataContextInfo } from "@/contexts/UserDataContext";
 const SendMoney = () => {
   const {setUserData} = useContext(UserDataContextInfo);
-    const {accessToken} = useContext(AccessTokenContextInfo);
     const {transferTo, setTransferTo} = useContext(TransferToContextInfo);
     const [receiver, setReceiver] = useState("");
     const [amount, setAmount] = useState("");
     const [password, setPassword] = useState("");
   const update = async()=>{
-    const res = await getDashboardData(accessToken);
+    const res = await getDashboardData();
       setUserData(res.data.user);
       console.log(res);
   }
@@ -23,7 +21,7 @@ const SendMoney = () => {
         if (transferTo === "BANK-UPI") {
             target = receiver.split("@")[0];
         }
-        const res = await sendMoney(accessToken, target, Number(amount), password);
+        const res = await sendMoney(target, Number(amount), password);
         console.log(res);
         if (!res.data.success) {
             alert(res.data.message);

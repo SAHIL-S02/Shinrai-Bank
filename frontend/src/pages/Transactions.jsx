@@ -22,7 +22,7 @@ const Transactions = () => {
         try {
             setLoading(true);
 
-            const res = await getTransactions(pageNo, accessToken);
+            const res = await getTransactions(pageNo);
 
             setTransactions(res.data.transactions || []);
             setTotalPages(res.data.totalPages || 1);

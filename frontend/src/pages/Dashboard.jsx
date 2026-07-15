@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {QRCode} from "react-qr-code";
 import {faHouseSignal, faSatelliteDish, faFireBurner, faCreditCard, faLightbulb, faMobile, faShare, faTurnUp, faTurnDown, faPaperPlane, faAddressBook, faBuildingColumns, faWallet } from '@fortawesome/free-solid-svg-icons'
 import { UserDataContextInfo } from '@/contexts/UserDataContext';
-import axios from 'axios';
+
 import { getDashboardData } from '@/services/api';
 import { AccessTokenContextInfo } from '@/contexts/AccessTokenContext';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -27,11 +27,11 @@ const Dashboard = () => {
     useEffect(() => {
       if(!accessToken){
         return;
-      }
+      }  
       const fetchData = async () => {
         try {
           setFetchingData(true);
-          const res = await getDashboardData(accessToken);
+          const res = await getDashboardData();
           setUserData(res.data.user);
           console.log(res);
         } catch (err) {
