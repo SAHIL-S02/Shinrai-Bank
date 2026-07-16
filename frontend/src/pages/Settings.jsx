@@ -16,7 +16,7 @@ const Settings = () => {
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
 
       <div className="relative max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Settings</h1>
+        <h1 className="text-2xl sm:text-4xl font-bold mb-8">Settings</h1>
 
         <div className="space-y-6">
 
@@ -109,7 +109,7 @@ const Settings = () => {
               Danger Zone
             </h2>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <button className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-xl">
                 Delete Account
               </button>

@@ -46,9 +46,11 @@ const Dashboard = () => {
     if (tokenLoading || fetchingData) {
       return (
         <div className=''>
-          <section className='lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex' >
-            <SideBar/>
-            <div className='mainDashboard w-full flex flex-col justify-center items-center m-9 bg-white rounded-2xl shadow-xl p-8 min-h-[450px]'>
+          <section className='min-h-[400px] lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex flex-col lg:flex-row' >
+            <div className='order-2 lg:order-1'>
+              <SideBar/>
+            </div>
+            <div className='order-1 lg:order-2 mainDashboard w-full flex flex-col justify-center items-center m-4 lg:m-9 bg-white rounded-2xl shadow-xl p-4 lg:p-8 min-h-[300px] lg:min-h-[450px]'>
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7763EA] mb-4"></div>
               <p className="text-gray-600 font-medium animate-pulse">Retrieving your secure bank dashboard...</p>
             </div>
@@ -60,9 +62,11 @@ const Dashboard = () => {
     console.log("Local data", userData);
     return (
       <div className=''>
-          <section className='lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex' >
-              <SideBar/>
-              <div className='mainDashboard w-full flex flex-col m-9'>
+          <section className='min-h-[400px] lg:min-h-[600px] lg:max-h-[800px] bg-[#E5EDF9] flex flex-col lg:flex-row' >
+              <div className='order-2 lg:order-1'>
+                <SideBar/>
+              </div>
+              <div className='order-1 lg:order-2 mainDashboard w-full flex flex-col p-4 md:p-6 lg:m-9'>
                 <div className='mb-2'>
                   <h1 className='font-bold text-xl mb-1'>
                     Overview
@@ -71,14 +75,14 @@ const Dashboard = () => {
                     Welcome back, {userData?.nickName || userData?.name}
                   </h3>
                 </div>
-                <div className='cardsAndOffers flex-1 flex justify-around pr-3 flex-wrap'>
-                  <div className='debitCard md:w-1/4 md:h-[200px] m-2 shadow-2xl bg-gradient-to-b from-[#F2757B] to-[#90A4FC] rounded-2xl p-3 pl-5 pr-5 text-white'>
+                <div className='cardsAndOffers flex-1 flex flex-col md:flex-row justify-around pr-0 md:pr-3 gap-4'>
+                  <div className='debitCard w-full md:w-1/4 min-h-[180px] md:h-[200px] shadow-2xl bg-gradient-to-b from-[#F2757B] to-[#90A4FC] rounded-2xl p-3 pl-5 pr-5 text-white'>
                     <div className='flex justify-between'>
                       <div>
                         <p className='text-sm'>{userData.cardType.charAt(0) + userData.cardType.slice(1).toLowerCase()} Card Number</p>
-                        <p className='ml-2 font-bold'>{userData.cardNumber}</p>
+                        <p className='ml-2 font-bold text-sm md:text-base break-all'>{userData.cardNumber}</p>
                         <br />
-                        <p className='ml-2 font-bold'>{userData.name}</p>
+                        <p className='ml-2 font-bold text-sm md:text-base'>{userData.name}</p>
                       </div>
                       <div className='w-1/6 flex flex-col justify-between'>
                         <img  src="/icons/card.png" alt="" />
@@ -107,29 +111,30 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  <div className='offers w-[70%] m-2  bg-[#FFFFFF] md:h-[200px] rounded-xl p-7 shadow-2xl'>
-                    <div className='  bg-white flex'>
-                        <div>
-                          <h2 className='text-4xl font-bold text-[#2A2F47]'>Cashback up to 60% 🎁</h2>
+                  <div className='offers w-full md:w-[70%] bg-[#FFFFFF] min-h-[150px] md:h-[200px] rounded-xl p-4 md:p-7 shadow-2xl'>
+                    <div className='bg-white flex'>
+                        <div className='flex-1'>
+                          <h2 className='text-2xl md:text-4xl font-bold text-[#2A2F47]'>Cashback up to 60% 🎁</h2>
                           <br />
-                          <p className='w-[90%]'>
+                          <p className='w-full md:w-[90%] text-sm md:text-base'>
                             Redesign concept for online bank mBank. This is online service that allows you to pay bills for a variety of goods and services using your personal device.
                           </p>
                         </div>
-                        <div className='w-[20%]'>
+                        <div className='w-[20%] hidden md:block'>
                           <img src="/offer.webp" alt="" />
                         </div>
                     </div>
                   </div>
                 </div>
-                <div className='transactionsAndTransfers grid grid-cols-10 grid-rows-10 gap-4 w-full h-[450px] mt-3'>
-                  <div className='transactions col-span-3 row-span-5 bg-white rounded-2xl p-4 shadow-2xl'>
+                {/* Mobile-friendly layout: stacked on mobile, grid on lg */}
+                <div className='transactionsAndTransfers flex flex-col lg:grid lg:grid-cols-10 lg:grid-rows-10 gap-4 w-full mt-3'>
+                  <div className='transactions lg:col-span-3 lg:row-span-5 bg-white rounded-2xl p-4 shadow-2xl'>
                     <NavLink to="/transactions"><h4 className='font-semibold mb-3'>
                       Transactions
                     </h4></NavLink>
                     {userData?.transactions?.map((transaction) => (
                       <div key={transaction._id} className="ml-3 flex justify-between mb-3">
-                        <div className="flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full">
+                        <div className="flex bg-[#F1F3F6] w-8 h-8 justify-center items-center rounded-full flex-shrink-0">
                           {transaction.user1 === userData.userId ? (
                             <FontAwesomeIcon icon={faTurnUp} className="text-red-500" />
                           ) : (
@@ -137,8 +142,8 @@ const Dashboard = () => {
                           )}
                         </div>
 
-                        <div>
-                          <p className="text-xs font-bold">
+                        <div className='ml-2 flex-1 min-w-0'>
+                          <p className="text-xs font-bold truncate">
                             {transaction.user1 === userData.userId
                               ? transaction.user2Name
                               : transaction.user1Name}
@@ -160,11 +165,11 @@ const Dashboard = () => {
                         </div>
 
                         <div
-                          className={
+                          className={`ml-2 flex-shrink-0 text-sm ${
                             transaction.user1 === userData.userId
                               ? "text-red-600"
                               : "text-green-600"
-                          }
+                          }`}
                         >
                           {transaction.user1 === userData.userId
                             ? `-₹${transaction.amount}`
@@ -174,18 +179,18 @@ const Dashboard = () => {
                     ))}
                     
                   </div>
-                  <div className='transfer col-span-3 row-span-4 bg-white rounded-2xl p-4 shadow-2xl'>
+                  <div className='transfer lg:col-span-3 lg:row-span-4 bg-white rounded-2xl p-4 shadow-2xl'>
                     <div className='flex items-center mb-5'>
                       <FontAwesomeIcon icon={faPaperPlane} className='text-[#7763EA] ml-1 mr-1'></FontAwesomeIcon>
                     <h2 className='ml-1 mr-2 font-semibold'>
                       Transfer
                     </h2>
                     </div>
-                    <div className='flex justify-between'>
+                    <div className='flex justify-between flex-wrap gap-3'>
                       <NavLink to="/send-money" onClick={()=>{setTransferTo("PHONE-NUMBER")}}>
                         <div className='flex flex-col justify-center flex-wrap items-center'>
                         <div>
-                          <FontAwesomeIcon icon={faAddressBook} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                          <FontAwesomeIcon icon={faAddressBook} className='text-[#D383A3] text-xl md:text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
                         </div>
                         <p className='text-xs text-center'>
                           Pay Number
@@ -195,7 +200,7 @@ const Dashboard = () => {
                       <NavLink to="/send-money" onClick={()=>{setTransferTo("ACCOUNT-NUMBER")}}>
                         <div className='flex flex-col justify-center flex-wrap items-center'>
                           <div>
-                            <FontAwesomeIcon icon={faBuildingColumns} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faBuildingColumns} className='text-[#D383A3] text-xl md:text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
                           </div>
                           <p className='text-xs text-center'>
                             Pay to Bank
@@ -205,7 +210,7 @@ const Dashboard = () => {
                       <NavLink to="/send-money" onClick={()=>{setTransferTo("BANK-UPI")}}>
                         <div className='flex flex-col justify-center flex-wrap items-center'>
                           <div className=''>
-                            <img src="/icons/upi.png" alt="" className='w-9 bg-[#F1F3F6] rounded-full p-1 mt-1 mb-1 shadow-md'/>
+                            <img src="/icons/upi.png" alt="" className='w-8 md:w-9 bg-[#F1F3F6] rounded-full p-1 mt-1 mb-1 shadow-md'/>
                           </div>
                           <p className='text-xs text-center'>
                             Pay to UPI
@@ -215,7 +220,7 @@ const Dashboard = () => {
                       <NavLink to="/check-balance">
                         <div className='flex flex-col justify-center flex-wrap items-center'>
                           <div>
-                            <FontAwesomeIcon icon={faWallet} className='text-[#D383A3] text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faWallet} className='text-[#D383A3] text-xl md:text-2xl p-1 pt-2 pb-2 text-center rounded-full bg-[#F1F3F6] shadow-md'></FontAwesomeIcon>
                           </div>
                           <p className='text-xs text-center'>
                             Check Balance
@@ -225,27 +230,27 @@ const Dashboard = () => {
                       
                     </div>
                   </div>
-                  <div className='userDetails col-span-4 row-span-4 bg-white rounded-2xl p-6 shadow-2xl flex justify-between'>
-                    <div className='flex flex-col'>
-                      <h2 className='font-bold text-gray-800 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]'>
+                  <div className='userDetails lg:col-span-4 lg:row-span-4 bg-white rounded-2xl p-4 md:p-6 shadow-2xl flex flex-col sm:flex-row justify-between gap-4'>
+                    <div className='flex flex-col min-w-0'>
+                      <h2 className='font-bold text-gray-800 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)] truncate'>
                         {userData.name}
                       </h2>
                       <p className='text-sm ml-3 mt-1'>+91 96473 97722</p>
-                      <p className='text-sm ml-3 mt-1'>Account Number: 9647397722</p>
-                      <p className='text-sm ml-3 mt-1'>
+                      <p className='text-sm ml-3 mt-1 break-all'>Account Number: 9647397722</p>
+                      <p className='text-sm ml-3 mt-1 break-all'>
                         UPI ID: {userData.phoneNumber}@shinrai
                       </p>
                       <hr />
                     </div>
-                    <div className='flex flex-col justify-center items-stretch'>
+                    <div className='flex flex-col justify-center items-center flex-shrink-0'>
                       <QRCode
                         value={`upi://pay?pa=${userData.phoneNumber}@shinrai&pn=SK SAHIL UDDIN`}
-                        size={120}
+                        size={100}
                       />
                       <p className='text-xs mt-2'>{userData.phoneNumber}@shinrai</p>
                     </div>
                   </div>
-                  <div className='col-span-3 row-span-4 row-start-6 bg-white rounded-2xl p-4 shadow-2xll'>
+                  <div className='lg:col-span-3 lg:row-span-4 lg:row-start-6 bg-white rounded-2xl p-4 shadow-2xl'>
                     <h4 className='font-semibold mb-3'>
                       Quick Transfer 
                     </h4>
@@ -276,36 +281,36 @@ const Dashboard = () => {
                     </div>
                     
                   </div>
-                  <div className='bills flex flex-col justify-around pl-6 col-span-7 row-span-5 row-start-5  bg-white rounded-2xl p-4 shadow-2xll'>
+                  <div className='bills flex flex-col justify-around pl-4 md:pl-6 lg:col-span-7 lg:row-span-5 lg:row-start-5 bg-white rounded-2xl p-4 shadow-2xl'>
                     <div className='mb-2'>
                       <h4 className='font-semibold mb-3'>
                         Bill Payments
                       </h4>
                       {/* <hr /> */}
                     </div>
-                    <div className='flex justify-around mb-4'>
+                    <div className='flex flex-wrap justify-around gap-4 mb-4'>
                       <div className='flex flex-col justify-center items-center'>
-                        <FontAwesomeIcon icon={faMobile} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faMobile} className='text-[#9A8CFF] text-xl md:text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
                         <p className='text-center text-xs mt-1'>Mobile Recharge</p>
                       </div>
                       <div className='flex flex-col justify-center items-center'>
-                        <FontAwesomeIcon icon={faLightbulb} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faLightbulb} className='text-[#9A8CFF] text-xl md:text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
                         <p className='text-center text-xs mt-1'>Electricity Bill</p>
                       </div>
                       <div className='flex flex-col justify-center items-center'>
-                        <FontAwesomeIcon icon={faCreditCard} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faCreditCard} className='text-[#9A8CFF] text-xl md:text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
                         <p className='text-center text-xs mt-1'>Credit Card</p>
                       </div>
                       <div className='flex flex-col justify-center items-center'>
-                        <FontAwesomeIcon icon={faFireBurner} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faFireBurner} className='text-[#9A8CFF] text-xl md:text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
                         <p className='text-center text-xs mt-1'>LPG Cylinder</p>
                       </div>
                       <div className='flex flex-col justify-center items-center'>
-                        <FontAwesomeIcon icon={faSatelliteDish} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faSatelliteDish} className='text-[#9A8CFF] text-xl md:text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
                         <p className='text-center text-xs mt-1'>DTH Recharge</p>
                       </div>
                       <div className='flex flex-col justify-center items-center'>
-                        <FontAwesomeIcon icon={faHouseSignal} className='text-[#9A8CFF] text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faHouseSignal} className='text-[#9A8CFF] text-xl md:text-2xl p-1 pt-2 pb-2 bg-slate-200 rounded-full'></FontAwesomeIcon>
                         <p className='text-center text-xs mt-1'>Broadband Bill</p>
                       </div>
                       

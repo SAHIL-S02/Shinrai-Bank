@@ -34,11 +34,11 @@ const Transactions = () => {
     };
 
     return (
-        <div className="p-4 lg:p-8">
+        <div className="p-3 sm:p-4 lg:p-8">
             <section className="bg-white rounded-3xl shadow-lg overflow-hidden">
                 {/* Header */}
                 <div className="p-6 border-b border-gray-200">
-                    <h1 className="text-2xl font-bold text-gray-800">
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
                         Transaction History
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">
@@ -47,7 +47,7 @@ const Transactions = () => {
                 </div>
 
                 {/* Table */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto hidden sm:block">
                     <table className="w-full">
                         <thead>
                             <tr className="bg-[#F5F8FD] text-gray-700">
@@ -153,25 +153,60 @@ const Transactions = () => {
                     </table>
                 </div>
 
+                {/* Mobile card view */}
+                <div className="block sm:hidden p-4 space-y-3">
+                    {loading ? (
+                        <p className="text-center py-10 text-gray-500">Loading transactions...</p>
+                    ) : transactions.length === 0 ? (
+                        <p className="text-center py-10 text-gray-500">No transactions found</p>
+                    ) : (
+                        transactions.map((transaction) => {
+                            const isSender = transaction.user1?.toString() === userData?.userId?.toString();
+                            return (
+                                <div key={`mobile-${transaction._id}`} className="bg-gray-50 rounded-xl p-4 space-y-2">
+                                    <div className="flex justify-between items-start">
+                                        <p className="text-sm font-medium text-gray-700 flex-1 min-w-0 mr-2">
+                                            {isSender
+                                                ? `Transfer to ${transaction.user2Name}`
+                                                : `Payment from ${transaction.user1Name}`}
+                                        </p>
+                                        <span className={`font-semibold text-sm flex-shrink-0 ${isSender ? "text-red-600" : "text-green-600"}`}>
+                                            {isSender ? `-₹${transaction.amount.toFixed(2)}` : `+₹${transaction.amount.toFixed(2)}`}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded-full">Success</span>
+                                        <span className="text-xs text-gray-500">
+                                            {new Date(transaction.createdAt).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
+                                            {" "}
+                                            {new Date(transaction.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}
+                                        </span>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    )}
+                </div>
+
                 {/* Pagination */}
                 {!loading && transactions.length > 0 && (
-                    <div className="flex items-center justify-between p-6 border-t border-gray-200">
+                    <div className="flex items-center justify-between p-4 sm:p-6 border-t border-gray-200">
                         <button
                             disabled={page === 1}
                             onClick={() => setPage((prev) => prev - 1)}
-                            className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-3 py-2 sm:px-4 sm:py-2 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Previous
                         </button>
 
-                        <span className="text-gray-600 font-medium">
+                        <span className="text-gray-600 font-medium text-sm">
                             Page {page} of {totalPages}
                         </span>
 
                         <button
                             disabled={page === totalPages}
                             onClick={() => setPage((prev) => prev + 1)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-3 py-2 sm:px-4 sm:py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Next
                         </button>

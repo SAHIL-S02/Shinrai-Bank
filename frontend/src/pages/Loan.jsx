@@ -17,7 +17,7 @@ const Loan = () => {
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
-        <h1 className="text-5xl font-bold mb-3">
+        <h1 className="text-3xl sm:text-5xl font-bold mb-3">
           Loans
         </h1>
 
@@ -26,7 +26,7 @@ const Loan = () => {
         </p>
 
         {/* Loan Types */}
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
           <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-xl">
             <div className="text-4xl mb-4"> </div>
             <h3 className="text-xl font-semibold mb-2">Home Loan</h3>
@@ -62,7 +62,7 @@ const Loan = () => {
             You're eligible for a loan up to
           </p>
 
-          <h3 className="text-5xl font-bold">
+          <h3 className="text-3xl sm:text-5xl font-bold">
             ₹5,00,000
           </h3>
 
@@ -139,7 +139,7 @@ const Loan = () => {
             Active Loan
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div>
               <p className="text-zinc-400">Loan Type</p>
               <p className="text-xl font-semibold">Personal Loan</p>

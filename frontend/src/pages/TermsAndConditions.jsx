@@ -10,7 +10,7 @@ const TermsAndConditions = () => {
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold">
             Terms &{" "}
             <span className="text-emerald-400">
               Conditions

@@ -53,7 +53,7 @@ const UserProfile = () => {
           </div>
 
           <div>
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-2xl sm:text-4xl font-bold">
               {user.name}
             </h1>
 
@@ -114,7 +114,7 @@ const UserProfile = () => {
 
         {/* Personal Information */}
         <div className="mt-8 bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8">
-          <h2 className="text-3xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6">
             Personal Information
           </h2>
 
@@ -128,7 +128,7 @@ const UserProfile = () => {
 
         {/* Banking Information */}
         <div className="mt-8 bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8">
-          <h2 className="text-3xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6">
             Banking Information
           </h2>
 

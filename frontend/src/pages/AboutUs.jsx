@@ -10,7 +10,7 @@ const AboutUs = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         {/* Hero Section */}
         <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-7xl font-bold">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold">
             About <span className="text-emerald-400">Shinrai Bank</span>
           </h1>
 
@@ -44,7 +44,7 @@ const AboutUs = () => {
         </div>
 
         {/* Statistics */}
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
           <div className="bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-3xl p-6 text-center">
             <h3 className="text-4xl font-bold">50K+</h3>
             <p className="text-white/80 mt-2">Users</p>
@@ -72,7 +72,7 @@ const AboutUs = () => {
             Why Choose Us?
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
               <h3 className="text-2xl font-semibold mb-3">
                 Secure Banking

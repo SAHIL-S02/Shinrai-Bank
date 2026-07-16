@@ -4,24 +4,24 @@ import { NavLink } from 'react-router-dom'
 const Home = () => {
   return (
     <div className="bg-gradient-to-b from-[#101212] relative to-[#08201D]">
-        <section className="relative lg:min-h-[1000px] pt-1 pb-10 sm:pt-32 sm:pb-16 lg:pb-24">
+        <section className="relative min-h-[500px] sm:min-h-[700px] lg:min-h-[1000px] pt-16 pb-10 sm:pt-32 sm:pb-16 lg:pb-24">
             <div className="absolute inset-x-0 bottom-0 z-10 hidden lg:flex">
                 <img className="hidden w-full lg:block" src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/5/credit-cards.png" alt="" />
                 <img className="block w-full lg:hidden" src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/5/credit-cards-mobile.png" alt="" />
             </div>
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 relative z-20">
                 <div className="max-w-xl mx-auto text-center">
-                    <h1 className="text-4xl font-bold sm:text-6xl">
+                    <h1 className="text-3xl font-bold sm:text-4xl md:text-6xl">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-white">Modern Banking Starts Here</span>
                     </h1>
-                    <p className="mt-5 text-base text-white sm:text-xl">No more hassle taking loans and making payments. Try Postcrats credit card, make your life simple.</p>
-                    <NavLink title="" className="inline-flex items-center px-6 py-4 mt-8 font-semibold text-white transition-all duration-200 bg-blue-600 rounded-lg sm:mt-16 hover:bg-blue-700 focus:bg-blue-700" role="button" to="/dashboard">
+                    <p className="mt-5 text-sm text-white sm:text-base md:text-xl">No more hassle taking loans and making payments. Try Postcrats credit card, make your life simple.</p>
+                    <NavLink title="" className="inline-flex items-center px-4 py-3 sm:px-6 sm:py-4 mt-8 font-semibold text-white transition-all duration-200 bg-blue-600 rounded-lg sm:mt-16 hover:bg-blue-700 focus:bg-blue-700 text-sm sm:text-base" role="button" to="/dashboard">
                         Apply for free
-                        <svg className="w-6 h-6 ml-8 -mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-4 sm:ml-8 -mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </NavLink>
-                    <div className="grid grid-cols-1 px-20 mt-12 text-left gap-x-12 gap-y-8 sm:grid-cols-3 sm:px-0">
+                    <div className="grid grid-cols-1 px-4 sm:px-20 mt-8 sm:mt-12 text-left gap-x-12 gap-y-6 sm:gap-y-8 sm:grid-cols-3 sm:px-0">
                         <div className="flex items-center">
                             <svg className="flex-shrink-0" width="31" height="25" viewBox="0 0 31 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path

@@ -29,7 +29,7 @@ const Contact = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="text-center mb-14">
-          <h1 className="text-5xl md:text-6xl font-bold">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold">
             Contact <span className="text-emerald-400">Shinrai Bank</span>
           </h1>
 
@@ -49,38 +49,38 @@ const Contact = () => {
             <div className="space-y-6">
               <div className="bg-zinc-900 rounded-2xl p-5">
                 <p className="text-zinc-400 text-sm">Customer Support</p>
-                <p className="text-lg font-semibold flex justify-between">
-                  sksahilu735@gmail.com <p className="text-gray-500 text-sm">(Developer's Email)</p>
-                </p>
+                <div className="text-base sm:text-lg font-semibold flex flex-col sm:flex-row sm:justify-between gap-1">
+                  <span className="break-all">sksahilu735@gmail.com</span> <span className="text-gray-500 text-sm">(Developer's Email)</span>
+                </div>
               </div>
 
               <div className="bg-zinc-900 rounded-2xl p-5">
                 <p className="text-zinc-400 text-sm">Phone Number</p>
-                <p className="text-lg font-semibold flex justify-between">
-                  +91 96473 97722 <p className="text-gray-500 text-sm">(Developer's Number)</p>
-                </p>
+                <div className="text-base sm:text-lg font-semibold flex flex-col sm:flex-row sm:justify-between gap-1">
+                  <span>+91 96473 97722</span> <span className="text-gray-500 text-sm">(Developer's Number)</span>
+                </div>
               </div>
 
               <div className="bg-zinc-900 rounded-2xl p-5">
                 <p className="text-zinc-400 text-sm">Head Office</p>
-                <p className="text-lg font-semibold flex justify-between">
-                  Kolkata, West Bengal, India <p className="text-gray-500 text-sm">(Not real)</p>
-                </p>
+                <div className="text-base sm:text-lg font-semibold flex flex-col sm:flex-row sm:justify-between gap-1">
+                  <span>Kolkata, West Bengal, India</span> <span className="text-gray-500 text-sm">(Not real)</span>
+                </div>
               </div>
 
               <div className="bg-zinc-900 rounded-2xl p-5">
                 <p className="text-zinc-400 text-sm">Working Hours</p>
-                <p className="text-lg font-semibold flex justify-between">
-                  24/7 Customer Support <p className="text-gray-500 text-sm">(Not real)</p>
-                </p>
+                <div className="text-base sm:text-lg font-semibold flex flex-col sm:flex-row sm:justify-between gap-1">
+                  <span>24/7 Customer Support</span> <span className="text-gray-500 text-sm">(Not real)</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
           <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl">
-            <h2 className="text-3xl font-semibold mb-8 flex justify-between">
-              Send a Message <p className="text-gray-500 text-sm">(Not Working)</p>
+            <h2 className="text-2xl sm:text-3xl font-semibold mb-8 flex flex-col sm:flex-row sm:justify-between gap-1">
+              <span>Send a Message</span> <span className="text-gray-500 text-sm">(Not Working)</span>
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -135,7 +135,7 @@ const Contact = () => {
         </div>
 
         {/* Quick Support Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-10">
           <div className="bg-white/5 border border-white/10 rounded-3xl p-6 text-center">
             <div className="text-4xl mb-3"></div>
             <h3 className="text-xl font-semibold">

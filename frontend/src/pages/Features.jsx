@@ -85,7 +85,7 @@ const Features = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         {/* Hero */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-bold">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold">
             Powerful Banking
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
               Features
@@ -99,7 +99,7 @@ const Features = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-14">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-14">
           <div className="bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-3xl p-6 text-center">
             <h2 className="text-4xl font-bold">75+</h2>
             <p className="text-white/80">Features</p>
