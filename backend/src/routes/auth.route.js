@@ -17,5 +17,7 @@ authRouter.post("/send-money", authController.sendMoney);
 authRouter.get("/transactions", authController.getTransactions);
 //check Balance
 authRouter.post("/check-balance", authController.checkBalance);
+//health check
+authRouter.get("/health", authController.health);
 
 export default authRouter;

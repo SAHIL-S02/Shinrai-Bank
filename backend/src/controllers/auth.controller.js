@@ -588,3 +588,11 @@ export async function checkBalance(req, res){
         })
     }
 }
+
+
+export async function health(req, res){
+    return res.status(200).json({
+        success:true,
+        message:"Server is running"
+    })
+}
